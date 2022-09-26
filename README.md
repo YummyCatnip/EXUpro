@@ -8,6 +8,16 @@ Currently the all custom cards in this repository can be treated as Stolen.
 You can find the Discord server this cards originate from here:
 [Extinction Unleashed Discord server](https://discord.gg/extinctionunleashed)
 
+##Q&A
+Q: Why stolen?
+A: I didn't ask permission to script them.
+
+Q: Will you be also scripting them for YGO Omega?
+A: No. Maybe one day, but right now I think it's just a lot of work having to script for 2 different simulators at once.
+
+Q: Why is your english weird?
+A: It's not my first language.
+
 ## JSON for easy updates
 ```
 		{
