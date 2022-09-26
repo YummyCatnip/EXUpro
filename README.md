@@ -10,7 +10,7 @@ Currently the all custom cards in this repository can be treated as Stolen.
 You can find the Discord server this cards originate from here:
 [Extinction Unleashed Discord server](https://discord.gg/extinctionunleashed)
 
-##Q&A
+## Q&A
 
 Q: Why stolen?
 A: I didn't ask permission to script them.
