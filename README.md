@@ -12,6 +12,9 @@ You can find the Discord server this cards originate from here:
 
 ## Q&A
 
+Q: Why did you start scripting this cards?
+A: So I could learn how to do it, and was to lazy to try and come up with my own original cards.
+
 Q: Why stolen?
 A: I didn't ask permission to script them.
 
