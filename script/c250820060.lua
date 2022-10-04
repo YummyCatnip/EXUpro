@@ -144,7 +144,8 @@ end
 function s.tgfilter(c)
 	return c:IsSetCard(0xc93) and c:IsAbleToGrave()
 end
-function s.eqtarg(e,tp,eg,ep,ev,re,r,rp,chk)
+function s.eqtarg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
+	if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsControler(tp) and s.etfilter(chkc,tp) end
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_SZONE)>0 and
 		Duel.IsExistingTarget(s.etfilter,tp,LOCATION_MZONE,0,1,nil,tp) end
 	Duel.Hint(HINT_MESSAGE,tp,HINTMSG_TARGET)

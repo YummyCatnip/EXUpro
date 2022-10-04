@@ -39,7 +39,8 @@ function s.spcond(e,tp,eg,ep,ev,re,r,rp)
 	local g=Duel.GetFieldGroup(tp,LOCATION_MZONE,0)
 	return #g>0 and g:FilterCount(aux.FaceupFilter(Card.IsType,TYPE_PENDULUM),nil)==#g
 end
-function s.sptarg(e,tp,eg,ep,ev,re,r,rp,chk)
+function s.sptarg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
+	if chkc then return chkc:IsLocation(LOCATION_PZONE) and chkc:IsControler(tp) and s.spfilter(chkc,e,tp) end
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0 
 	and Duel.IsExistingTarget(s.spfilter,tp,LOCATION_PZONE,0,1,nil,e,tp) end
 	Duel.Hint(HINT_MESSAGE,tp,HINTMSG_SPSUMMON)
@@ -94,7 +95,8 @@ function s.bncond(e,tp,eg,ep,ev,re,r,rp)
 	return #g1>0 and g1:FilterCount(aux.FaceupFilter(Card.IsType,TYPE_PENDULUM),nil)==#g1
 	and g2 and g2:IsExists(s.syfilter,1,nil)
 end
-function s.bntarg(e,tp,eg,ep,ev,re,r,rp,chk)
+function s.bntarg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
+	if chkc then return chkc:IsLocation(LOCATION_ONFIELD) and chkc:IsControler(1-tp) and s.bnfilter(chkc) end
 	if chk==0 then return Duel.IsExistingTarget(s.bnfilter,tp,0,LOCATION_ONFIELD,1,nil) end
 	Duel.Hint(HINT_MESSAGE,tp,HINTMSG_REMOVE)
 	local g=Duel.SelectTarget(tp,s.bnfilter,tp,0,LOCATION_ONFIELD,1,2,nil)

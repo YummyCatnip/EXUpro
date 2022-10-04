@@ -34,9 +34,17 @@ function s.initial_effect(c)
 	e4:SetCode(EVENT_PHASE+PHASE_END)
 	e4:SetRange(LOCATION_MZONE)
 	e4:SetCountLimit(1)
+	e4:SetCondition(s.rtcond)
 	e4:SetTarget(s.rttarg)
 	e4:SetOperation(s.rtoper)
 	c:RegisterEffect(e4)
+	aux.GlobalCheck(s,function()
+		local ge1=Effect.CreateEffect(c)
+		ge1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+		ge1:SetCode(EVENT_REMOVE)
+		ge1:SetOperation(s.checkop)
+		Duel.RegisterEffect(ge1,0)
+	end)
 end
 function s.spcheck(g,lc,sumtype,tp)
 	return g:CheckSameProperty(Card.GetAttribute,lc,sumtype,tp)
@@ -61,36 +69,50 @@ function s.atkcond(e,tp,eg,ep,ev,re,r,rp)
 end
 --e3 Effect Code
 function s.rmcost(e,tp,eg,ep,ev,re,r,rp,chk)
+	local c=e:GetHandler()
 	if chk==0 then return Duel.IsExistingMatchingCard(Card.IsAbleToRemoveAsCost,tp,LOCATION_GRAVE,0,2,nil) end
+	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_REMOVE)
 	local g=Duel.SelectMatchingCard(tp,Card.IsAbleToRemoveAsCost,tp,LOCATION_GRAVE,0,2,2,nil)
 	Duel.Remove(g,POS_FACEUP,REASON_COST)
+	c:RegisterFlagEffect(id,RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END,0,0)
 end
 function s.rmcond(e,tp,eg,ep,ev,re,r,rp)
+	local c=e:GetHandler()
+	if c:IsStatus(STATUS_BATTLE_DESTROYED) then return false end
 	local loc=Duel.GetChainInfo(ev,CHAININFO_TRIGGERING_LOCATION)
-	return (loc&LOCATION_GRAVE)~=0 and not e:GetHandler():IsStatus(STATUS_CHAINING)
+	return (loc&LOCATION_GRAVE)~=0 and not c:IsStatus(STATUS_CHAINING)
 end
 function s.rmtarg(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.IsExistingMatchingCard(Card.IsAbleToRemove,tp,0,LOCATION_GRAVE,0,1,nil) end
+	if chk==0 then return Duel.IsExistingMatchingCard(Card.IsAbleToRemove,tp,0,LOCATION_GRAVE,1,nil) end
 	Duel.SetOperationInfo(0,CATEGORY_REMOVE,nil,1,1-tp,LOCATION_GRAVE)
 end
 function s.rmoper(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
-	local tc=Duel.SelectMatchingCard(tp,Card.IsAbleToRemoveAsCost,tp,LOCATION_GRAVE,0,1,1,nil)
-	if tc and tc:IsRelateToEffect(e) then
+	if not Duel.IsExistingMatchingCard(Card.IsAbleToRemove,tp,0,LOCATION_GRAVE,1,nil) then return false end
+	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_REMOVE)
+	local tc=Duel.SelectMatchingCard(tp,Card.IsAbleToRemoveAsCost,tp,0,LOCATION_GRAVE,1,1,nil)
+	if #tc>0 then
 		Duel.Remove(tc,POS_FACEUP,REASON_EFFECT)
 	end
-	e:GetHandler():RegisterFlagEffect(id,RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END,0,0)
 end
 --e4 Effect Code
-function s.filter(c)
-	return ((c:GetReason()&REASON_EFFECT)>0 or (c:GetReason()&REASON_COST)>0) and (c:GetReasonCard():GetCode()==250820071)
-		and c:IsAbleToDeck()
+function s.checkop(e,tp,eg,ep,ev,re,r,rp)
+	if not re or not re:GetHandler():IsCode(250820071) then return end
+	for tc in aux.Next(eg) do
+		tc:RegisterFlagEffect(250820071,RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END,0,1)
+	end
 end
-function s.rttarg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
+function s.filter(c)
+	return c:GetFlagEffect(250820071)>0 and c:IsAbleToDeck()
+end
+function s.rtcond(e,tp,eg,ep,ev,re,r,rp)
+	local c=e:GetHandler()
+	return c:GetFlagEffect(id)>0
+end
+function s.rttarg(e,tp,eg,ep,ev,re,r,rp,chk)
 	local c=e:GetHandler()
 	local ct=Duel.GetMatchingGroupCount(s.filter,tp,LOCATION_REMOVED,LOCATION_REMOVED,nil)
-	if chkc then return chkc:IsLocation(LOCATION_GRAVE) and s.filter(chkc) end
-	if chk==0 then return Duel.GetMatchingGroup(s.filter,tp,LOCATION_REMOVED,LOCATION_REMOVED,nil)>0
+	if chk==0 then return #Duel.GetMatchingGroup(s.filter,tp,LOCATION_REMOVED,LOCATION_REMOVED,nil)>0
 		and c:GetFlagEffect(id)>0 end
 	local g=Duel.GetMatchingGroup(s.filter,tp,LOCATION_REMOVED,LOCATION_REMOVED,nil)
 	Duel.SetOperationInfo(0,CATEGORY_TODECK,g,ct,tp,LOCATION_REMOVED)
@@ -98,7 +120,7 @@ end
 function s.rtoper(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	local tc=Duel.GetMatchingGroup(s.filter,tp,LOCATION_REMOVED,LOCATION_REMOVED,nil)
-	if tc and tc:IsRelateToEffect(e) then
+	if tc then
 		Duel.SendtoDeck(tc,nil,SEQ_DECKSHUFFLE,REASON_EFFECT)
 	end
 end

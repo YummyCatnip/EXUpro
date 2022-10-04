@@ -50,6 +50,7 @@ function s.setfilter(c)
 	return c:IsType(TYPE_TRAP) and (c:IsSetCard(0x19) or c:IsCode(52394047,97234686,76384284,16990348)) and c:IsSSetable(true)
 end
 function s.targ2(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
+	if chkc then return chkc:IsLocation(LOCATION_SZONE) and chkc:IsControler(1-tp) and chkc:IsFacedown() end
 	if chk==0 then return Duel.IsExistingTarget(Card.IsFacedown,tp,0,LOCATION_SZONE,1,nil) end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TARGET)
 	local g=Duel.SelectTarget(tp,Card.IsFacedown,tp,0,LOCATION_SZONE,1,1,nil)

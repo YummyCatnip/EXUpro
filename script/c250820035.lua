@@ -38,7 +38,7 @@ function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_CONFIRM)
 	local g=Duel.SelectMatchingCard(tp,nil,tp,LOCATION_DECK,0,2,2,nil)
 	Duel.ConfirmCards(1-tp,g)
-	Duel.SetTargetCard( g)
+	Duel.SetTargetCard(g)
 end
 function s.operation(e,tp,eg,ep,ev,re,r,rp)
 	local g=Duel.GetTargetCards(e)
@@ -51,7 +51,6 @@ function s.operation(e,tp,eg,ep,ev,re,r,rp)
 end
 --e2 Effect Code
 function s.cfilter(c,tp)
-	Debug.Message(c:GetPreviousSequence())
 	local dc=Duel.GetMatchingGroupCount(nil,tp,LOCATION_DECK,0,nil)
 	return c:IsControler(tp) and c:IsPreviousLocation(LOCATION_DECK) and (c:GetPreviousSequence()>=dc)
 end

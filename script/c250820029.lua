@@ -67,7 +67,8 @@ function s.rmcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	e:SetLabelObject(ovr)
 	Duel.Remove(c,POS_FACEUP,REASON_COST)
 end
-function s.rmtarg(e,tp,eg,ep,ev,re,r,rp,chk)
+function s.rmtarg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
+	if chkc then return chkc:IsLocation(LOCATION_GRAVE) and chkc:IsControler(tp) and s.filter(chkc,e,tp,ovr) end
 	if chk==0 then return e:GetHandler():GetFlagEffect(id)==0 end
 	local ovr=e:GetLabelObject()
 	if Duel.GetLocationCount(tp,LOCATION_MZONE)>0

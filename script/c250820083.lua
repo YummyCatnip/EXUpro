@@ -31,13 +31,22 @@ function s.initial_effect(c)
   local e2=Effect.CreateEffect(c)
   e2:SetDescription(aux.Stringid(id,1))
   e2:SetCategory(CATEGORY_TOHAND)
+  e2:SetType(EFFECT_TYPE_TRIGGER_O+EFFECT_TYPE_FIELD)
+  e2:SetProperty(EFFECT_FLAG_CARD_TARGET+EFFECT_FLAG_DELAY)
+  e2:SetCode(EVENT_MOVE)
+  e2:SetRange(LOCATION_MZONE)
+  e2:SetCondition(s.thcond)
+  e2:SetTarget(s.thtarg)
+  e2:SetOperation(s.thoper)
+  c:RegisterEffect(e2)
 end
 --e0 Effect Code
 function s.imtarg(e,c)
-	return e:GetHandler():GetColumnGroup():IsContains(c) and c~=e:GetHandler()
+	return (e:GetHandler():GetColumnGroup():IsContains(c)) and c~=e:GetHandler()
 end
 --e1 Effect Code
-function s.mvtarg(e,tp,eg,ep,ev,re,r,rp,chk)
+function s.mvtarg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
+	if chkc then return chkc:IsLocation(LOCATION_MZONE) and aux.TRUE(chkc) end
   if chk==0 then return Duel.IsExistingTarget(aux.TRUE,tp,LOCATION_MZONE,LOCATION_MZONE,1,nil) end
   Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TARGET)
 		Duel.SelectTarget(tp,aux.TRUE,tp,LOCATION_MZONE,LOCATION_MZONE,1,1,nil)
@@ -58,6 +67,29 @@ function s.mvoper(e,tp,eg,ep,ev,re,r,rp)
 		end
 		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOZONE)
 		Duel.MoveSequence(tc,math.log(Duel.SelectDisableField(tp,1,p1,p2,0),2)-i)
-	end
 end
 --e2 Effect Code
+function s.mvfilter(c)
+  return c:IsLocation(LOCATION_MZONE) and c:IsPreviousLocation(LOCATION_MZONE)
+end
+function s.thcond(e,tp,eg,ep,ev,re,r,rp)
+	return eg:IsExists(s.mvfilter,1,nil)
+end
+function s.cfilter(c,rc)
+    local ag=rc:GetColumnGroup(1,1)-rc:GetColumnGroup()
+    return ag and ag:IsContains(c)
+end
+function s.thtarg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
+    local c=e:GetHandler()
+    if chkc then return chkc:IsOnField() and s.cfilter(chkc,c) end
+    if chk==0 then return Duel.IsExistingTarget(s.cfilter,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,1,nil,c) end
+    Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TARGET)
+   local g=Duel.SelectTarget(tp,s.cfilter,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,1,1,nil,c)
+    Duel.SetOperationInfo(0,CATEGORY_TOHAND,g,#g,0,0)
+end
+function s.thoper(e,tp,eg,ep,ev,re,r,rp)
+  local tc=Duel.GetFirstTarget()
+  if tc and tc:IsRelateToEffect(e) then
+    Duel.SendtoHand(tc,nil,REASON_EFFECT)
+  end
+end

@@ -46,9 +46,8 @@ end
 function s.drfilter(c)
 	return (c:IsType(TYPE_XYZ) or c:IsSetCard(0xc92)) and c:IsAbleToDeck() and c:IsCanBeEffectTarget(e)
 end
-function s.drtarg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
+function s.drtarg(e,tp,eg,ep,ev,re,r,rp,chk)
 	local g=Duel.GetMatchingGroup(s.drfilter,tp,LOCATION_GRAVE,0,nil,e)
-	if chkc then return chkc:IsLocation(LOCATION_GRAVE) and chkc:IsControler(tp) and s.drfilter(chkc,e) end
 	if chk==0 then return Duel.IsPlayerCanDraw(tp,1) and aux.SelectUnselectGroup(g,e,tp,5,5,nil,0) end
 	local tg=aux.SelectUnselectGroup(g,e,tp,5,5,nil,1,tp,HINTMSG_TODECK)
 	Duel.SetTargetCard(tg)

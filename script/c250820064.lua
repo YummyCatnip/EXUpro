@@ -16,7 +16,8 @@ s.listed_series={0xc93}
 function s.filter(c)
 	return c:IsSetCard(0xc93) and c:IsAbleToRemove() and c:IsOriginalType(TYPE_MONSTER) and c:GetSequence()<5
 end
-function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
+function s.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
+	if chkc then return chkc:IsLocation(LOCATION_SZONE) and chkc:IsControler(tp) and s.filter(chkc) end
 	if chk==0 then return Duel.IsExistingTarget(s.filter,tp,LOCATION_SZONE,0,1,nil) 
 		and Duel.IsPlayerCanDraw(tp,2) end
 	local g=Duel.SelectTarget(tp,s.filter,tp,LOCATION_SZONE,0,1,1,nil)

@@ -35,7 +35,8 @@ s.xyz_number=108
 function s.tdfilter(c)
   return c:IsType(TYPE_SPELL+TYPE_TRAP) and c:IsAbleToDeck()
 end
-function s.tdtarg(e,tp,eg,ep,ev,re,r,rp,chk)
+function s.tdtarg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
+	if chkc then return chkc:IsLocation(LOCATION_ONFIELD) and s.tdfilter(chkc) end
   if chk==0 then return Duel.IsExistingTarget(s.tdfilter,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,1,nil) and Duel.IsExistingMatchingCard(Card.IsAbleToHand,tp,LOCATION_ONFIELD,0,1,nil) end
   Duel.Hint(HINT_MESSAGE,tp,HINTMSG_TODECK)
   Duel.SelectTarget(tp,s.tdfilter,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,1,1,nil)
@@ -58,7 +59,8 @@ end
 function s.dscond(e,tp,eg,ep,ev,re,r,rp)
   return eg:IsExist(s.cfilter,1,nil)
 end
-function s.dstarg(e,tp,eg,ep,ev,re,r,rp,chk)
+function s.dstarg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
+	if chkc then return chkc:IsLocation(LOCATION_ONFIELD) and s.dsfilter(chkc) end
   if chk==0 then return Duel.IsExistingTarget(s.dsfilter,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,1,nil) end
   Duel.Hint(HINT_MESSAGE,tp,HINT_MSGDESTROY)
   local g=Duel.SelectTarget(tp,s.dsfilter,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,1,1,nil)

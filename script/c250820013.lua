@@ -51,7 +51,8 @@ end
 function s.lvlcond(e,tp,eg,ep,ev,re,r,rp)
 	return e:GetHandler():IsPreviousLocation(LOCATION_PZONE)
 end
-function s.lvltarg(e,tp,eg,ep,ev,re,r,rp,chk)
+function s.lvltarg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
+	if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsControler(1-tp) and s.lvlfilter(chkc) end
 	if chk==0 then return Duel.IsExistingTarget(s.lvlfilter,tp,0,LOCATION_MZONE,1,nil) end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TARGET)
 	local g=Duel.SelectTarget(tp,s.lvlfilter,tp,0,LOCATION_MZONE,1,1,nil)

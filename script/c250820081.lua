@@ -33,11 +33,12 @@ function s.cost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return c:IsDiscardable() end
 	Duel.SendtoGrave(c,REASON_COST+REASON_DISCARD)
 end
-function s.sptarg(e,tp,eg,ep,ev,re,r,rp,chk)
+function s.sptarg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
+	if chkc then return chkc:IsLocation(LOCATION_SZONE) and chkc:IsControler(tp) and s.spfilter(chkc) end
   local c=e:GetHandler()
-  if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0 and Duel.IsExistingTarget(s.spfilter,tp, LOCATION_ONFIELD,0,1,nil) and c:IsCanBeSpecialSummoned(e,0,tp,false,false,POS_FACEUP) end
+  if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0 and Duel.IsExistingTarget(s.spfilter,tp, LOCATION_SZONE,0,1,nil) and c:IsCanBeSpecialSummoned(e,0,tp,false,false,POS_FACEUP) end
   Duel.Hint(HINT_MESSAGE,tp,HINTMSG_DESTROY)
-  local g=Duel.SelectTarget(tp,s.spfilter,tp, LOCATION_ONFIELD,0,1,1,nil)
+  local g=Duel.SelectTarget(tp,s.spfilter,tp,LOCATION_SZONE,0,1,1,nil)
   Duel.SetOperationInfo(0,CATEGORY_DESTROY,g,1,0,0)
 end
 function s.spoper(e,tp,eg,ep,ev,re,r,rp)
@@ -52,10 +53,11 @@ end
 function s.dsfilter(c)
   return c:IsType(TYPE_SPELL+TYPE_TRAP) and c:IsFaceup()
 end
-function s.dstarg(e,tp,eg,ep,ev,re,r,rp,chk)
-  if chk==0 then return Duel.IsExistingTarget(s.dsfilter,tp, LOCATION_ONFIELD,0,1,nil) end
+function s.dstarg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
+	if chkc then return chkc:IsLocation(LOCATION_ONFIELD) and s.dsfilter(chkc) end
+  if chk==0 then return Duel.IsExistingTarget(s.dsfilter,tp, LOCATION_ONFIELD,LOCATION_ONFIELD,1,nil) end
   Duel.Hint(HINT_MESSAGE,tp,HINTMSG_DESTROY)
-  local g=Duel.SelectTarget(tp,s.spfilter,tp, LOCATION_ONFIELD,0,1,1,nil)
+  local g=Duel.SelectTarget(tp,s.spfilter,tp, LOCATION_ONFIELD,LOCATION_ONFIELD,1,1,nil)
   Duel.SetOperationInfo(0,CATEGORY_DESTROY,g,1,0,0)
 end
 function s.dsoper(e,tp,eg,ep,ev,re,r,rp)
