@@ -1,6 +1,6 @@
 # Nerfem Customs
 
-Customs cards that came originally from the Extinction Unleashed, scripted by me for EDOpro.
+Customs cards that came originally from Extinction Unleashed(EXU) Discord server, scripted by me for EDOpro.
 
 ## About Extinction Unleashed
 
