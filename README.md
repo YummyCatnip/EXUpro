@@ -24,6 +24,9 @@ A: No. Maybe one day, but right now I think it's just a lot of work having to sc
 Q: Why is your english weird?
 A: It's not my first language.
 
+Q: I found a bug/error, or a card doesn't work as is supposed to, what do I do?
+A: You can tell me, and I'll look on to it and hopefully fix/change it.
+
 ## JSON for easy updates
 ```
 		{
