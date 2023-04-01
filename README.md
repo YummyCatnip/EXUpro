@@ -1,4 +1,4 @@
-# Nerfem Customs
+# Yummy's Customs
 
 Customs cards that came originally from Extinction Unleashed(EXU) Discord server, scripted by me for EDOpro.
 
@@ -31,7 +31,7 @@ A: You can tell me, and I'll look on to it and hopefully fix/change it.
 ```
 		{
 		"url": "https://github.com/YummyCatnip/EXU-scripted",
-		"repo_name": "Nerfem's Stolen Cards",
+		"repo_name": "Yummy's Stolen Cards",
 		"repo_path": "./repositories/customcards",
 		"should_update": true,
 		"should_read": true
