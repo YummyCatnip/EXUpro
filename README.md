@@ -32,7 +32,7 @@ A: You can tell me, and I'll look on to it and hopefully fix/change it.
 		{
 		"url": "https://github.com/YummyCatnip/EXU-scripted",
 		"repo_name": "Yummy's Stolen Cards",
-		"repo_path": "./repositories/customcards",
+		"repo_path": "./repositories/EXU-scripted",
 		"should_update": true,
 		"should_read": true
 		}
