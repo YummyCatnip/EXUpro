@@ -30,7 +30,7 @@ A: You can tell me, and I'll look on to it and hopefully fix/change it.
 ## JSON for easy updates
 ```
 		{
-		"url": "https://github.com/Nerfem/Customs",
+		"url": "https://github.com/YummyCatnip/EXU-scripted/",
 		"repo_name": "Nerfem's Stolen Cards",
 		"repo_path": "./repositories/customcards",
 		"should_update": true,
