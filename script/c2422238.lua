@@ -40,7 +40,7 @@ end
 --e1 Effect Code
 function s.cond1(e,tp,eg,ep,ev,re,r,rp)
 	local g=Duel.GetFieldGroup(tp,LOCATION_MZONE,0)
-	return #g>0 and g:FilterCount(aux.FilterFaceupFunction(Card.IsSetCard,0x19),nil)==#g and Duel.GetTurnPlayer()~=tp
+	return #g>0 and g:FilterCount(aux.FaceupFilter(Card.IsSetCard,0x19),nil)==#g and Duel.GetTurnPlayer()~=tp
 end
 function s.tgfilter(c,e,tp)
 	return c:IsSetCard(0x19) and c:IsCanBeSpecialSummoned(e,113,tp,false,false,POS_FACEUP)
