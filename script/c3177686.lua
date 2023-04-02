@@ -30,9 +30,16 @@ end
 function s.operation(e,tp,eg,ep,ev,re,r,rp)
 	if Duel.GetLocationCount(tp,LOCATION_SZONE)<=0 then return false end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOFIELD)
-	local tc=Duel.SelectMatchingCard(tp,s.cfilter,tp,LOCATION_DECK,0,1,1,nil)
+	local tc=Duel.SelectMatchingCard(tp,s.cfilter,tp,LOCATION_DECK,0,1,1,nil):GetFirst()
 	if tc then
-		Duel.MoveToField(tc:GetFirst(),tp,tp,LOCATION_SZONE,POS_FACEUP,true)
+		local te=tc:GetActivateEffect()
+		Duel.MoveToField(tc,tp,tp,LOCATION_SZONE,POS_FACEUP,true)
+		local te=tc:GetActivateEffect()
+		local tep=tc:GetControler()
+		local cost=te:GetCost()
+		if cost
+			then cost(te,tep,eg,ep,ev,re,r,rp,1)
+		end
 	end
 	local e1=Effect.CreateEffect(e:GetHandler())
 	e1:SetType(EFFECT_TYPE_FIELD)

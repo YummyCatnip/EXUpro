@@ -63,6 +63,13 @@ function s.hroper(e,tp,eg,ep,ev,re,r,rp)
 	local tc=Duel.GetFirstTarget()
 	if tc and tc:IsFacedown() and tc:IsRelateToEffect(e) then
 		Duel.ChangePosition(tc,POS_FACEUP)
+		local te=tc:GetActivateEffect()
+		local te=tc:GetActivateEffect()
+		local tep=tc:GetControler()
+		local cost=te:GetCost()
+		if cost
+			then cost(te,tep,eg,ep,ev,re,r,rp,1)
+		end
 		Duel.BreakEffect()
 		if tc:IsFaceup() then
 			Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_DESTROY)
