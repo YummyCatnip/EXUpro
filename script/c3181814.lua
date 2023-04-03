@@ -45,81 +45,14 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
 	local g=Duel.GetMatchingGroup(s.tgfilter,tp,LOCATION_EXTRA,0,nil)
 	if tc and #g>0 and tc:IsRelateToEffect(e) then
 		local sg=g:Select(tp,1,1,nil):GetFirst()
-		local code=sg:GetCode()
-		if Duel.SendtoGrave(sg,REASON_EFFECT)~=0 then
-			if (code==3181706) then
-				local opt=Duel.SelectOption(tp,aux.Stringid(id,1),aux.Stringid(id,2))
-				if opt==0 then
-					local e1=Effect.CreateEffect(c)
-					e1:SetType(EFFECT_TYPE_SINGLE)
-					e1:SetCode(EFFECT_CHANGE_RACE)
-					e1:SetValue(RACE_FAIRY)
-					e1:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END)
-					tc:RegisterEffect(e1)
-				else
-					local e1=Effect.CreateEffect(c)
-					e1:SetType(EFFECT_TYPE_SINGLE)
-					e1:SetCode(EFFECT_CHANGE_RACE)
-					e1:SetValue(RACE_FIEND)
-					e1:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END)
-					tc:RegisterEffect(e1)
-				end
-			end
-			if (code==3181665) then
-				local opt=Duel.SelectOption(tp,aux.Stringid(id,1),aux.Stringid(id,3))
-				if opt==0 then
-					local e1=Effect.CreateEffect(c)
-					e1:SetType(EFFECT_TYPE_SINGLE)
-					e1:SetCode(EFFECT_CHANGE_RACE)
-					e1:SetValue(RACE_FAIRY)
-					e1:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END)
-					tc:RegisterEffect(e1)
-				else
-					local e1=Effect.CreateEffect(c)
-					e1:SetType(EFFECT_TYPE_SINGLE)
-					e1:SetCode(EFFECT_CHANGE_RACE)
-					e1:SetValue(RACE_SPELLCASTER)
-					e1:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END)
-					tc:RegisterEffect(e1)
-				end
-			end
-			if (code==3181745) then
-				local opt=Duel.SelectOption(tp,aux.Stringid(id,1),aux.Stringid(id,4))
-				if opt==0 then
-					local e1=Effect.CreateEffect(c)
-					e1:SetType(EFFECT_TYPE_SINGLE)
-					e1:SetCode(EFFECT_CHANGE_RACE)
-					e1:SetValue(RACE_FAIRY)
-					e1:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END)
-					tc:RegisterEffect(e1)
-				else
-					local e1=Effect.CreateEffect(c)
-					e1:SetType(EFFECT_TYPE_SINGLE)
-					e1:SetCode(EFFECT_CHANGE_RACE)
-					e1:SetValue(RACE_BEAST_WARRIOR)
-					e1:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END)
-					tc:RegisterEffect(e1)
-				end
-			end
-			if (code==3181765) then
-				local opt=Duel.SelectOption(tp,aux.Stringid(id,1),aux.Stringid(id,5))
-				if opt==0 then
-					local e1=Effect.CreateEffect(c)
-					e1:SetType(EFFECT_TYPE_SINGLE)
-					e1:SetCode(EFFECT_CHANGE_RACE)
-					e1:SetValue(RACE_FAIRY)
-					e1:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END)
-					tc:RegisterEffect(e1)
-				else
-					local e1=Effect.CreateEffect(c)
-					e1:SetType(EFFECT_TYPE_SINGLE)
-					e1:SetCode(EFFECT_CHANGE_RACE)
-					e1:SetValue(RACE_WARRIOR)
-					e1:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END)
-					tc:RegisterEffect(e1)
-				end
-			end
-		end
+		local races=sg:GetRace()
+		local ac=Duel.AnnounceRace(tp,1,races)
+		local e1=Effect.CreateEffect(c)
+		e1:SetType(EFFECT_TYPE_SINGLE)
+		e1:SetCode(EFFECT_CHANGE_RACE)
+		e1:SetValue(ac)
+		e1:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END)
+		tc:RegisterEffect(e1)
 	end
 end
 -- e2 Effect Code
