@@ -82,7 +82,7 @@ end
 --e3 Effect Code
 function s.rmcond(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
-	return (c:IsReason(REASON_BATTLE) or rp==1-tp) and r:IsReasonPlayer(1-tp))
+	return (c:IsReason(REASON_BATTLE) or rp==1-tp) and r:IsReasonPlayer(1-tp)
 end
 function s.rmtarg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(Card.IsAbleToRemove,tp,LOCATION_GRAVE,0,3,nil) and Duel.IsExistingMatchingCard(Card.IsAbleToRemove,tp,0,LOCATION_GRAVE,3,nil) end
