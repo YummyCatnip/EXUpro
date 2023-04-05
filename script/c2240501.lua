@@ -1,5 +1,7 @@
 --Vuluti Holy-Reader
 local s,id,o=GetID()
+Duel.LoadScript("glitchylib.lua")
+Duel.LoadScript("yummylib.lua")
 function s.initial_effect(c)
 	--Link Summon
 	c:EnableReviveLimit()
@@ -62,34 +64,25 @@ end
 function s.lcoper(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	local tc=Duel.GetFirstTarget()
-	if tc then
-		if tc:IsFacedown() and tc:IsRelateToEffect(e) then
-			tc:RegisterFlagEffect(id,RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END,0,1)
+	if tc and tc:IsRelateToEffect(e) then
+		tc:RegisterFlagEffect(id,RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END,0,1)
+		--Send to GY
+		local e2=Effect.CreateEffect(e:GetHandler())
+		e2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+		e2:SetProperty(EFFECT_FLAG_IGNORE_IMMUNE)
+		e2:SetCode(EVENT_PHASE+PHASE_END)
+		e2:SetCountLimit(1)
+		e2:SetCondition(s.con)
+		e2:SetOperation(s.op)
+		e2:SetReset(RESET_PHASE+PHASE_END)
+		e2:SetLabelObject(tc)
+		Duel.RegisterEffect(e2,tp)
+		if tc:IsFacedown() then
 			local e1=Effect.CreateEffect(c)
 			e1:SetType(EFFECT_TYPE_SINGLE)
 			e1:SetCode(EFFECT_CANNOT_TRIGGER)
 			e1:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END+RESET_SELF_TURN)
 			e1:SetValue(1)
-			tc:RegisterEffect(e1)
-			--Send to GY
-			local e2=Effect.CreateEffect(e:GetHandler())
-			e2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
-			e2:SetProperty(EFFECT_FLAG_IGNORE_IMMUNE)
-			e2:SetCode(EVENT_PHASE+PHASE_END)
-			e2:SetCountLimit(1)
-			e2:SetCondition(s.con)
-			e2:SetOperation(s.op)
-			e2:SetReset(RESET_PHASE+PHASE_END)
-			e2:SetLabelObject(tc)
-			Duel.RegisterEffect(e2,tp)
-		elseif tc:IsFaceup() and tc:IsRelateToEffect(e) then
-			local e1=Effect.CreateEffect(c)
-			e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
-			e1:SetRange(LOCATION_ONFIELD)
-			e1:SetCode(EVENT_PHASE+PHASE_END)
-			e1:SetOperation(s.desop)
-			e1:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END)
-			e1:SetCountLimit(1)
 			tc:RegisterEffect(e1)
 		end
 	end
@@ -100,8 +93,4 @@ end
 function s.op(e,tp,eg,ep,ev,re,r,rp)
 	local tc=e:GetLabelObject()
 	Duel.SendtoGrave(tc,REASON_EFFECT)
-end
-
-function s.desop(e,tp,eg,ep,ev,re,r,rp)
-	Duel.SendtoGrave(e:GetHandler(),REASON_EFFECT)
 end

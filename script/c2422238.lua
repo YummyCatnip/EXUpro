@@ -1,5 +1,7 @@
 --Gladiator Beast Tiberius
 local s,id=GetID()
+Duel.LoadScript("glitchylib.lua")
+Duel.LoadScript("yummylib.lua")
 function s.initial_effect(c)
 	--Limit 1
 	c:SetUniqueOnField(1,0,id)
@@ -32,7 +34,7 @@ function s.initial_effect(c)
 	e2:SetOperation(s.oper2)
 	c:RegisterEffect(e2)
 end
-s.listed_series={0x19}
+s.listed_series={SET_GLADIATOR_BEAST}
 s.listed_names={id}
 function s.lcheck(g,lc,sumtype,tp)
 	return g:CheckDifferentPropertyBinary(Card.GetRace,lc,sumtype,tp)
@@ -40,10 +42,10 @@ end
 --e1 Effect Code
 function s.cond1(e,tp,eg,ep,ev,re,r,rp)
 	local g=Duel.GetFieldGroup(tp,LOCATION_MZONE,0)
-	return #g>0 and g:FilterCount(aux.FaceupFilter(Card.IsSetCard,0x19),nil)==#g and Duel.GetTurnPlayer()~=tp
+	return #g>0 and g:FilterCount(aux.FaceupFilter(Card.IsSetCard,SET_GLADIATOR_BEAST),nil)==#g and Duel.GetTurnPlayer()~=tp
 end
 function s.tgfilter(c,e,tp)
-	return c:IsSetCard(0x19) and c:IsCanBeSpecialSummoned(e,113,tp,false,false,POS_FACEUP)
+	return c:IsSetCard(SET_GLADIATOR_BEAST) and c:IsCanBeSpecialSummoned(e,113,tp,false,false)
 end
 function s.targ1(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0
@@ -51,16 +53,16 @@ function s.targ1(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,1,tp,LOCATION_DECK)
 end
 function s.oper1(e,tp,eg,ep,ev,re,r,rp)
-	if Duel.GetLocationCount(tp,LOCATION_MZONE)<=0 then return end
-	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
-	local g=Duel.SelectMatchingCard(tp,s.tgfilter,tp,LOCATION_DECK,0,1,1,nil,e,tp)
-	local tc=g:GetFirst()
+	local c=e:GetHandler()
+	local g=Duel.GetMatchingGroup(s.tgfilter,tp,LOCATION_DECK,0,nil,e,tp)
+	if (Duel.GetLocationCount(tp,LOCATION_MZONE)<=0 or #g<=0) then return end
+	local tc=Duel.Select(HINTMSG_SPSUMMON,false,tp,s.tgfilter,tp,LOCATION_DECK,0,1,1,nil,e,tp):GetFirst()
 	if tc then
 		Duel.SpecialSummon(tc,113,tp,tp,false,false,POS_FACEUP)
-		local fid=e:GetHandler():GetFieldID()
+		local fid=c:GetFieldID()
 		tc:RegisterFlagEffect(id,RESET_EVENT+RESETS_STANDARD,0,1,fid)
 		tc:RegisterFlagEffect(tc:GetOriginalCode(),RESET_EVENT+RESETS_STANDARD_DISABLE,0,0)
-		local e1=Effect.CreateEffect(e:GetHandler())
+		local e1=Effect.CreateEffect(c)
 		e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
 		e1:SetCode(EVENT_PHASE+PHASE_END)
 		e1:SetProperty(EFFECT_FLAG_IGNORE_IMMUNE)
@@ -88,11 +90,11 @@ function s.cond2(e,tp,eg,ep,ev,re,r,rp)
 	return e:GetHandler():GetBattledGroupCount()>0
 end
 function s.tgfilter2(c,e,tp,ft)
-	return c:IsFaceup() and c:IsSetCard(0x19) and c:IsAbleToDeck() and (ft>-1 or c:GetSequence()<5)
+	return c:IsFaceup() and c:IsSetCard(SET_GLADIATOR_BEAST) and c:IsAbleToDeck() and (ft>-1 or c:GetSequence()<5)
 		and Duel.IsExistingMatchingCard(s.spfilter,tp,LOCATION_DECK,0,1,nil,e,tp,c:GetOriginalCodeRule())
 end
 function s.spfilter(c,e,tp,code)
-	return c:IsSetCard(0x19) and not c:IsOriginalCodeRule(code) and c:IsCanBeSpecialSummoned(e,124,tp,false,false)
+	return c:IsSetCard(SET_GLADIATOR_BEAST) and not c:IsOriginalCodeRule(code) and c:IsCanBeSpecialSummoned(e,124,tp,false,false)
 end
 function s.targ2(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	local ft=Duel.GetLocationCount(tp,LOCATION_MZONE)

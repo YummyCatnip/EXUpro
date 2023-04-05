@@ -7,37 +7,36 @@ function s.initial_effect(c)
 	c:EnableReviveLimit()
 	Link.AddProcedure(c,nil,2,nil,s.spcheck)
 	--ATK boost
-	local e2=Effect.CreateEffect(c)
-	e2:SetType(EFFECT_TYPE_SINGLE)
-	e2:SetCode(EFFECT_MATERIAL_CHECK)
-	e2:SetValue(s.valcheck)
-	e2:SetLabelObject(e1)
-	c:RegisterEffect(e2)
+	local e1=Effect.CreateEffect(c)
+	e1:SetType(EFFECT_TYPE_SINGLE)
+	e1:SetCode(EFFECT_MATERIAL_CHECK)
+	e1:SetValue(s.valcheck)
+	c:RegisterEffect(e1)
 	--Banish in response
+	local e2=Effect.CreateEffect(c)
+	e2:SetDescription(aux.Stringid(id,0))
+	e2:SetCategory(CATEGORY_REMOVE)
+	e2:SetType(EFFECT_TYPE_QUICK_O+EFFECT_TYPE_FIELD)
+	e2:SetCode(EVENT_CHAINING)
+	e2:SetRange(LOCATION_MZONE)
+	e2:SetCountLimit(1)
+	e2:SetCost(s.rmcost)
+	e2:SetCondition(s.rmcond)
+	e2:SetTarget(s.rmtarg)
+	e2:SetOperation(s.rmoper)
+	c:RegisterEffect(e2)
+	--Return them to Deck
 	local e3=Effect.CreateEffect(c)
-	e3:SetDescription(aux.Stringid(id,0))
-	e3:SetCategory(CATEGORY_REMOVE)
-	e3:SetType(EFFECT_TYPE_QUICK_O+EFFECT_TYPE_FIELD)
-	e3:SetCode(EVENT_CHAINING)
+	e3:SetDescription(aux.Stringid(id,1))
+	e3:SetCategory(CATEGORY_TODECK)
+	e3:SetType(EFFECT_TYPE_TRIGGER_F+EFFECT_TYPE_FIELD)
+	e3:SetCode(EVENT_PHASE+PHASE_END)
 	e3:SetRange(LOCATION_MZONE)
 	e3:SetCountLimit(1)
-	e3:SetCost(s.rmcost)
-	e3:SetCondition(s.rmcond)
-	e3:SetTarget(s.rmtarg)
-	e3:SetOperation(s.rmoper)
+	e3:SetCondition(s.rtcond)
+	e3:SetTarget(s.rttarg)
+	e3:SetOperation(s.rtoper)
 	c:RegisterEffect(e3)
-	--Return them to Deck
-	local e4=Effect.CreateEffect(c)
-	e4:SetDescription(aux.Stringid(id,1))
-	e4:SetCategory(CATEGORY_TODECK)
-	e4:SetType(EFFECT_TYPE_TRIGGER_F+EFFECT_TYPE_FIELD)
-	e4:SetCode(EVENT_PHASE+PHASE_END)
-	e4:SetRange(LOCATION_MZONE)
-	e4:SetCountLimit(1)
-	e4:SetCondition(s.rtcond)
-	e4:SetTarget(s.rttarg)
-	e4:SetOperation(s.rtoper)
-	c:RegisterEffect(e4)
 	aux.GlobalCheck(s,function()
 		local ge1=Effect.CreateEffect(c)
 		ge1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
@@ -49,7 +48,7 @@ end
 function s.spcheck(g,lc,sumtype,tp)
 	return g:CheckSameProperty(Card.GetAttribute,lc,sumtype,tp)
 end
---e1/e2 Effect Code
+--e1 Effect Code
 function s.valcheck(e,c)
 	local g=c:GetMaterial()
 	if g:IsExists(Card.IsAttribute,1,nil,ATTRIBUTE_WATER) then
@@ -64,10 +63,7 @@ function s.valcheck(e,c)
 		c:RegisterEffect(e1)
 	end
 end
-function s.atkcond(e,tp,eg,ep,ev,re,r,rp)
-	return e:GetHandler():IsSummonType(SUMMON_TYPE_LINK) and e:GetLabel()==1
-end
---e3 Effect Code
+--e2 Effect Code
 function s.rmcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	local c=e:GetHandler()
 	if chk==0 then return Duel.IsExistingMatchingCard(Card.IsAbleToRemoveAsCost,tp,LOCATION_GRAVE,0,2,nil) end
@@ -95,7 +91,7 @@ function s.rmoper(e,tp,eg,ep,ev,re,r,rp)
 		Duel.Remove(tc,POS_FACEUP,REASON_EFFECT)
 	end
 end
---e4 Effect Code
+--e3 Effect Code
 function s.checkop(e,tp,eg,ep,ev,re,r,rp)
 	if not re or not re:GetHandler():IsCode(250820071) then return end
 	for tc in aux.Next(eg) do
