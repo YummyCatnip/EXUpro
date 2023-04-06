@@ -1,6 +1,6 @@
 # EXUpro
 
-Customs cards that came originally from Extinction Unleashed(EXU) Discord server, scripted by me for EDOpro.
+Customs cards that came originally from Extinction Unleashed(EXU) Discord server, scripted by me and some other people for EDOpro.
 
 ## About Extinction Unleashed
 
