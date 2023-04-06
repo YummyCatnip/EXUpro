@@ -15,9 +15,6 @@ You can find our Discord server here:
 Q: Why did you start scripting this cards, and why cards from EXU specifically?
 A: So I could learn how to do it, and I was to lazy to try and come up with my own original cards.
 
-Q: Why stolen?
-A: I didn't ask permission to script them.
-
 Q: Will you be also scripting them for YGO Omega?
 A: No. Maybe one day, but right now I think it's just a lot of work having to script for 2 different simulators at once.
 
@@ -25,7 +22,7 @@ Q: Why is your english weird?
 A: It's not my first language.
 
 Q: I found a bug/error, or a card doesn't work as is supposed to, what do I do?
-A: You can tell me, and I'll look on to it and hopefully fix/change it.
+A: You can ping Yummy Catnip at our Discord server, and I'll look on to it and hopefully fix/change it.
 
 ## JSON for easy updates
 ```
