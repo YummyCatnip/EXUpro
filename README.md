@@ -30,9 +30,9 @@ A: You can tell me, and I'll look on to it and hopefully fix/change it.
 ## JSON for easy updates
 ```
 		{
-		"url": "https://github.com/YummyCatnip/EXU-scripted",
+		"url": "https://github.com/YummyCatnip/EXUpro",
 		"repo_name": "Yummy's Stolen Cards",
-		"repo_path": "./repositories/EXU-scripted",
+		"repo_path": "./repositories/EXUpro",
 		"should_update": true,
 		"should_read": true
 		}
