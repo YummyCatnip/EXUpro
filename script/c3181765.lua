@@ -1,8 +1,10 @@
 -- Animathos Strength
 local s,id=GetID()
+Duel.LoadScript("glitchylib.lua")
+Duel.LoadScript("yummylib.lua")
 function s.initial_effect(c)
 	c:EnableReviveLimit()
-	Fusion.AddProcMix(c,true,true,aux.FilterBoolFunctionEx(Card.IsSetCard,0xc77),aux.FilterBoolFunctionEx(Card.IsType,TYPE_FUSION))
+	Fusion.AddProcMix(c,true,true,aux.FilterBoolFunctionEx(Card.IsSetCard,SET_ANIMATHOS),aux.FilterBoolFunctionEx(Card.IsType,TYPE_FUSION))
 	-- Cannot be Special Summoned from the Extra Deck
 	local e0=Effect.CreateEffect(c)
 	e0:SetProperty(EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_UNCOPYABLE+EFFECT_FLAG_SINGLE_RANGE)
@@ -55,12 +57,12 @@ function s.initial_effect(c)
 	e4:SetOperation(s.rtoper)
 	c:RegisterEffect(e4)
 end
-s.listed_series={0xc77}
+s.listed_series={SET_ANIMATHOS}
 s.listed_names={id}
-s.material_setcode=0xc77
+s.material_setcode=SET_ANIMATHOS
 -- e1 Effect Code
 function s.spfilter1(c)
-	return c:IsSetCard(0xc77) and c:IsReleasable()
+	return c:IsSetCard(SET_ANIMATHOS) and c:IsReleasable()
 end
 function s.spfilter2(c)
 	return c:IsType(TYPE_FUSION) and c:IsReleasable()
@@ -98,7 +100,7 @@ function s.rescon(sg,e,tp,mg)
 	return aux.ChkfMMZ(1)(sg,e,tp,mg) and sg:IsExists(s.matchk,1,nil,sg)
 end
 function s.matchk(c,sg)
-	return c:IsType(TYPE_FUSION) and sg:FilterCount(Card.IsSetCard,c,0xc77)==1
+	return c:IsType(TYPE_FUSION) and sg:FilterCount(Card.IsSetCard,c,SET_ANIMATHOS)==1
 end
 function s.spoper(e,tp,eg,ep,ev,re,r,rp,c)
 	local g=e:GetLabelObject()
@@ -121,6 +123,9 @@ end
 -- e3 Effect Code
 function s.ngcond(e,tp,eg,ep,ev,re,r,rp)
 	return not e:GetHandler():IsStatus(STATUS_BATTLE_DESTROYED) and Duel.IsChainNegatable(ev)
+end
+function s.ngfilter(c)
+	return c:IsType(TYPE_FUSION) and c:IsAbleToRemove()
 end
 function s.ngcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(s.ngfilter,tp,LOCATION_GRAVE,LOCATION_GRAVE,2,nil) end

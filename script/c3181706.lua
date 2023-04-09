@@ -1,8 +1,10 @@
 -- Animathos Anger
 local s,id=GetID()
+Duel.LoadScript("glitchylib.lua")
+Duel.LoadScript("yummylib.lua")
 function s.initial_effect(c)
 	c:EnableReviveLimit()
-	Fusion.AddProcMix(c,true,true,aux.FilterBoolFunctionEx(Card.IsSetCard,0xc77),aux.FilterBoolFunctionEx(Card.IsRace,RACE_FIEND))
+	Fusion.AddProcMix(c,true,true,aux.FilterBoolFunctionEx(Card.IsSetCard,SET_ANIMATHOS),aux.FilterBoolFunctionEx(Card.IsRace,RACE_FIEND))
 	-- Cannot be Special Summoned from the Extra Deck
 	local e0=Effect.CreateEffect(c)
 	e0:SetProperty(EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_UNCOPYABLE+EFFECT_FLAG_SINGLE_RANGE)
@@ -48,11 +50,11 @@ function s.initial_effect(c)
 	e4:SetOperation(s.ssoper)
 	c:RegisterEffect(e4)
 end
-s.listed_series={0xc77}
-s.material_setcode=0xc77
+s.listed_series={SET_ANIMATHOS}
+s.material_setcode=SET_ANIMATHOS
 -- e1 Effect Code
 function s.spfilter1(c)
-	return c:IsSetCard(0xc77) and c:IsReleasable()
+	return c:IsSetCard(SET_ANIMATHOS) and c:IsReleasable()
 end
 function s.spfilter2(c)
 	return c:IsRace(RACE_FIEND) and c:IsReleasable()
@@ -90,7 +92,7 @@ function s.rescon(sg,e,tp,mg)
 	return aux.ChkfMMZ(1)(sg,e,tp,mg) and sg:IsExists(s.matchk,1,nil,sg)
 end
 function s.matchk(c,sg)
-	return c:IsRace(RACE_FIEND) and sg:FilterCount(Card.IsSetCard,c,0xc77)==1
+	return c:IsRace(RACE_FIEND) and sg:FilterCount(Card.IsSetCard,c,SET_ANIMATHOS)==1
 end
 function s.spoper(e,tp,eg,ep,ev,re,r,rp,c)
 	local g=e:GetLabelObject()
@@ -120,14 +122,14 @@ end
 function s.sstarg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsLocation(LOCATION_REMOVED) and s.ssfilter(chkc,e,tp) end
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0 and Duel.IsExistingTarget(s.ssfilter,tp,LOCATION_REMOVED,LOCATION_REMOVED,1,nil,e,tp) end
-	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
-	local g=Duel.SelectTarget(tp,s.filter,tp,LOCATION_REMOVED,LOCATION_REMOVED,1,1,nil,e,tp)
+	local g=Duel.Select(HINTMSG_SPSUMMON,true,tp,s.filter,tp,LOCATION_REMOVED,LOCATION_REMOVED,1,1,nil,e,tp)
 	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,g,1,0,0)
 end
 function s.ssoper(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	local tc=Duel.GetFirstTarget()
-	if tc:IsRelateToEffect(e) and Duel.SpecialSummonStep(tc,0,tp,tp,false,false,POS_FACEUP_ATTACK) then
+	if tc:IsRelateToEffect(e) then 
+		Duel.SpecialSummon(tc,0,tp,tp,false,false,POS_FACEUP_ATTACK)
 		local fid=c:GetFieldID()
 		--Cannot activate its effects
 		local e1=Effect.CreateEffect(e:GetHandler())
@@ -150,7 +152,6 @@ function s.ssoper(e,tp,eg,ep,ev,re,r,rp)
 		e2:SetReset(RESET_PHASE+PHASE_END)
 		Duel.RegisterEffect(e2,tp)
 	end
-	Duel.SpecialSummonComplete()
 end
 function s.tgcon(e,tp,eg,ep,ev,re,r,rp)
 	local tc=e:GetLabelObject()

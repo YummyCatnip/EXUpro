@@ -1,8 +1,10 @@
 -- Animathos Justice
 local s,id=GetID()
+Duel.LoadScript("glitchylib.lua")
+Duel.LoadScript("yummylib.lua")
 function s.initial_effect(c)
 	c:EnableReviveLimit()
-	Fusion.AddProcMix(c,true,true,aux.FilterBoolFunctionEx(Card.IsSetCard,0xc77),aux.FilterBoolFunctionEx(Card.IsRace,RACE_SPELLCASTER))
+	Fusion.AddProcMix(c,true,true,aux.FilterBoolFunctionEx(Card.IsSetCard,SET_ANIMATHOS),aux.FilterBoolFunctionEx(Card.IsRace,RACE_SPELLCASTER))
 	-- Cannot be Special Summoned from the Extra Deck
 	local e0=Effect.CreateEffect(c)
 	e0:SetProperty(EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_UNCOPYABLE+EFFECT_FLAG_SINGLE_RANGE)
@@ -41,11 +43,11 @@ function s.initial_effect(c)
 	e3:SetOperation(s.tgoper)
 	c:RegisterEffect(e3)
 end
-s.listed_series={0xc77}
-s.material_setcode=0xc77
+s.listed_series={SET_ANIMATHOS}
+s.material_setcode=SET_ANIMATHOS
 -- e1 Effect Code
 function s.spfilter1(c)
-	return c:IsSetCard(0xc77) and c:IsReleasable()
+	return c:IsSetCard(SET_ANIMATHOS) and c:IsReleasable()
 end
 function s.spfilter2(c)
 	return c:IsRace(RACE_SPELLCASTER) and c:IsReleasable()
@@ -83,7 +85,7 @@ function s.rescon(sg,e,tp,mg)
 	return aux.ChkfMMZ(1)(sg,e,tp,mg) and sg:IsExists(s.matchk,1,nil,sg)
 end
 function s.matchk(c,sg)
-	return c:IsRace(RACE_SPELLCASTER) and sg:FilterCount(Card.IsSetCard,c,0xc77)==1
+	return c:IsRace(RACE_SPELLCASTER) and sg:FilterCount(Card.IsSetCard,c,SET_ANIMATHOS)==1
 end
 function s.spoper(e,tp,eg,ep,ev,re,r,rp,c)
 	local g=e:GetLabelObject()
@@ -112,7 +114,7 @@ function s.tgefil(c)
 end
 function s.tgtarg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return false end
-	if chk==0 then return Duel.IsExistingMatchingTarget(s.tgffil,tp,LOCATION_ONFIELD,0,1,nil) and Duel.IsExistingMatchingTarget(s.tgffil,tp,0,LOCATION_ONFIELD,1,nil) end
+	if chk==0 then return Duel.IsExistingTarget(s.tgffil,tp,LOCATION_ONFIELD,0,1,nil) and Duel.IsExistingTarget(s.tgffil,tp,0,LOCATION_ONFIELD,1,nil) end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOGRAVE)
 	local g1=Duel.SelectTarget(tp,s.tgffil,tp,LOCATION_ONFIELD,0,1,1,nil)
 	local g2=Duel.SelectTarget(tp,s.tgffil,tp,0,LOCATION_ONFIELD,1,1,nil)
@@ -124,7 +126,7 @@ function s.tgoper(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	local sp=Duel.GetTargetCards(e)
 	local op=e:GetLabelObject()
-	g:RemoveCard(op)
+	sp:RemoveCard(op)
 	if not (sp or op) then return false end
 	local spe=Duel.GetMatchingGroup(s.tgefil,tp,LOCATION_EXTRA,0,nil)
 	local ope=Duel.GetMatchingGroup(s.tgefil,tp,0,LOCATION_EXTRA,nil)
