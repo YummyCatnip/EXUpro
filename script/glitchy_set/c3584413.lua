@@ -28,7 +28,7 @@ function s.initial_effect(c)
 	c:SummonedTrigger(false,false,true,false,1,CATEGORY_REMOVE,EFFECT_FLAG_CARD_TARGET+EFFECT_FLAG_DELAY,true,
 		nil,
 		nil,
-		aux.Target(aux.BanishFilter(nil,false,true,false,false),LOCATION_GRAVE+LOCATION_MZONE,LOCATION_GRAVE+LOCATION_MZONE,1,1,nil,nil,CATEGORY_REMOVE),
+		aux.Target(aux.BanishFilter(nil,false,true,false,false),0,LOCATION_GRAVE,1,1,nil,nil,CATEGORY_REMOVE),
 		aux.BanishOperation(SUBJECT_IT)
 	)
 	--pseudo fusion summon
