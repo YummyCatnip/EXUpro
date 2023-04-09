@@ -46,7 +46,7 @@ function s.droper(e,tp,eg,ep,ev,re,r,rp)
 		Duel.ShuffleHand(tp)
 		Duel.BreakEffect()
 		local sg=Duel.SelectMatchingCard(tp,Card.IsAbleToDeck,tp,LOCATION_HAND,0,1,1,nil)
-		Duel.SendtoDeck(g,nil,1,REASON_EFFECT)
+		Duel.SendtoDeck(sg,nil,1,REASON_EFFECT)
 	end
 end
 function s.drcond(e,tp,eg,ep,ev,re,r,rp)
