@@ -31,7 +31,7 @@ function s.initial_effect(c)
 	local e3=e2:Clone()
 	e3:SetCode(EVENT_SPSUMMON_SUCCESS)
 	c:RegisterEffect(e3)
-	local e4=e3:Clone()
+	local e4=e2:Clone()
 	e4:SetCode(EVENT_FLIP_SUMMON_SUCCESS)
 	c:RegisterEffect(e4)
 end
@@ -73,18 +73,8 @@ function s.spoper(e,tp,eg,ep,ev,re,r,rp)
 	else return end
 	if op==0 then Duel.SpecialSummon(sg,0,tp,tp,false,false,POS_FACEUP,zone1)
 	else Duel.SpecialSummon(sg,0,tp,1-tp,false,false,POS_FACEUP,zone2) end
-	sg:RegisterFlagEffect(id,RESET_EVENT+RESETS_STANDARD,0,1,Duel.GetTurnCount())
-	local e1=Effect.CreateEffect(c)
-	e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
-	e1:SetProperty(EFFECT_FLAG_IGNORE_IMMUNE)
-	e1:SetCode(EVENT_PHASE+PHASE_END)
-	e1:SetLabel(Duel.GetTurnCount())
-	e1:SetLabelObject(tc)
-	e1:SetCondition(s.tdcon)
-		e1:SetOperation(s.tdop)
-	e1:SetReset(RESET_PHASE+PHASE_END+RESET_SELF_TURN,2)
-	e1:SetCountLimit(1)
-	Duel.RegisterEffect(e1,tp)
+	local turn=Duel.GetTurnCount()
+	aux.DelayedOperation(sg,PHASE_END,id,e,tp,function(ag) Duel.SendtoDeck(ag,nil,SEQ_DECKSHUFFLE,REASON_EFFECT) end,function() return Duel.GetTurnCount()~=turn and not Duel.IsTurnPlayer(1-tp) end,0,1,aux.Stringid(id,3))
 	if sg:IsControler(tp) then
 		local e2=Effect.CreateEffect(c)
 		e2:SetType(EFFECT_TYPE_SINGLE)
@@ -97,13 +87,4 @@ function s.spoper(e,tp,eg,ep,ev,re,r,rp)
 		e3:SetReset(RESET_EVENT+RESETS_STANDARD-RESET_TOFIELD)
 		sg:RegisterEffect(e3)
 	end
-end
-function s.tdcon(e,tp,eg,ep,ev,re,r,rp)
-	local tc=e:GetLabelObject()
-	return Duel.GetTurnCount()~=e:GetLabel() and Duel.GetTurnPlayer()==tp and tc:GetFlagEffectLabel(id)==e:GetLabel()
-end
-function s.tdop(e,tp,eg,ep,ev,re,r,rp)
-	local tc=e:GetLabelObject()
-	Duel.Hint(HINT_CARD,0,id)
-	Duel.SendtoDeck(tc,nil,2,REASON_EFFECT)
 end
