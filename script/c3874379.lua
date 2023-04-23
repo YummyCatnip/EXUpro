@@ -51,7 +51,7 @@ end
 function s.spfilter(c,hc,e,tp)
 	local zone1=hc:GetLinkedZone(tp)&~0x60
 	local zone2=hc:GetLinkedZone(tp)&~0x60
-	return c:ListsArchetype(SET_ABERRATION) and not c:IsType(TYPE_EXTRA) and (c:IsCanBeSpecialSummoned(e,0,tp,false,false) or c:IsCanBeSpecialSummoned(e,0,tp,false,false,POS_FACEUP,1-tp)) and (Duel.GetMZoneCount(tp,c,tp,LOCATION_REASON_TOFIELD,zone1)>0 or Duel.GetMZoneCount(1-tp,c,tp,LOCATION_REASON_TOFIELD,zone2)>0)
+	return c:ListsArchetype(SET_ABERRATION) and not c:IsType(TYPE_EXTRA) and ((c:IsCanBeSpecialSummoned(e,0,tp,false,false) and Duel.GetMZoneCount(tp,c,tp,LOCATION_REASON_TOFIELD,zone1)>0) or (c:IsCanBeSpecialSummoned(e,0,tp,false,false,POS_FACEUP,1-tp) and Duel.GetMZoneCount(1-tp,c,tp,LOCATION_REASON_TOFIELD,zone2)>0))
 end
 function s.sptarg(e,tp,eg,ep,ev,re,r,rp,chk)
 	local c=e:GetHandler()

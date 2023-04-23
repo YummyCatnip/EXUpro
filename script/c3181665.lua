@@ -130,13 +130,13 @@ function s.tgoper(e,tp,eg,ep,ev,re,r,rp)
 	if not (sp or op) then return false end
 	local spe=Duel.GetMatchingGroup(s.tgefil,tp,LOCATION_EXTRA,0,nil)
 	local ope=Duel.GetMatchingGroup(s.tgefil,tp,0,LOCATION_EXTRA,nil)
-	if #spe>0 and Duel.SelectYesNo(aux.Stringid(id,1)) then
+	if #spe>0 and Duel.SelectYesNo(tp,aux.Stringid(id,1)) then
 		local sf=spe:Select(tp,1,1,nil)
 		Duel.SendtoGrave(sf,REASON_EFFECT)
 	else
 		Duel.SendtoGrave(sp,REASON_EFFECT)
 	end
-	if #ope>0 and Duel.SelectYesNo(aux.Stringid(id,1)) then
+	if #ope>0 and Duel.SelectYesNo(1-tp,aux.Stringid(id,1)) then
 		local of=ope:Select(1-tp,1,1,nil)
 		Duel.SendtoGrave(of,REASON_EFFECT)
 	else

@@ -72,11 +72,11 @@ function s.repop(e,tp,eg,ep,ev,re,r,rp)
 	local g1=Duel.GetMatchingGroup(s.cgfilter,tp,LOCATION_GRAVE,0,nil,e,tp)
 	local g2=Duel.GetMatchingGroup(s.cgfilter,tp,0,LOCATION_GRAVE,nil,e,tp)
 	if #g1==0 and #g2==0 then return end
-	if #g1>0 and Duel.GetLocationCount(tp,LOCATION_MZONE)>0 and Duel.SelectYesNo(aux.Stringid(id,1)) then
+	if #g1>0 and Duel.GetLocationCount(tp,LOCATION_MZONE)>0 and Duel.SelectYesNo(tp,aux.Stringid(id,1)) then
 		local sg1=Duel.Select(HINTMSG_SPSUMMON,false,tp,s.cgfilter,tp,LOCATION_GRAVE,0,1,1,nil,e,tp)
 		Duel.SpecialSummon(sg1,0,tp,tp,false,false,POS_FACEDOWN_DEFENSE)
 	end
-	if #g2>0 and Duel.GetLocationCount(1-tp,LOCATION_MZONE) and Duel.SelectYesNo(aux.Stringid(id,1)) then
+	if #g2>0 and Duel.GetLocationCount(1-tp,LOCATION_MZONE) and Duel.SelectYesNo(1-tp,aux.Stringid(id,1)) then
 		local sg2=Duel.Select(HINTMSG_SPSUMMON,false,1-tp,s.cgfilter,tp,0,LOCATION_GRAVE,1,1,nil,e,tp)
 		Duel.SpecialSummon(sg2,0,1-tp,1-tp,false,false,POS_FACEDOWN_DEFENSE)
 	end

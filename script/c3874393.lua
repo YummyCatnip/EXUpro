@@ -53,7 +53,7 @@ function s.initial_effect(c)
 	e5:SetOperation(s.tkoper)
 	c:RegisterEffect(e5)
 end
-s.listed_names={CARD_ABE_214,3876554}
+s.listed_names={CARD_ABE_214,3876554,id+1}
 s.listed_series={SET_ABERRATION}
 -- e2 Effect Code
 function s.limitcon(e)

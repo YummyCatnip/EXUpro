@@ -73,10 +73,11 @@ function s.ufilter(e,te)
 	return rc:IsSetCard(SET_PUMPKINHEAD) and rc:IsControler(1-e:GetHandlerPlayer())
 end
 -- e4 Effect Code
-function s.cntarg(e,tp,eg,ep,ev,re,r,rp)
+function s.cntarg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(aux.pupfil,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,1,nil) end
 end
 function s.cnoper(e,tp,eg,ep,ev,re,r,rp)
+	local c=e:GetHandler()
 	local g=Duel.GetMatchingGroup(aux.pupfil,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,nil)
 	if #g>0 then
 		for tc in g:Iter() do
