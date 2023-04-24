@@ -122,7 +122,7 @@ end
 function s.sstarg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsLocation(LOCATION_REMOVED) and s.ssfilter(chkc,e,tp) end
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0 and Duel.IsExistingTarget(s.ssfilter,tp,LOCATION_REMOVED,LOCATION_REMOVED,1,nil,e,tp) end
-	local g=Duel.Select(HINTMSG_SPSUMMON,true,tp,s.filter,tp,LOCATION_REMOVED,LOCATION_REMOVED,1,1,nil,e,tp)
+	local g=Duel.Select(HINTMSG_SPSUMMON,true,tp,s.ssfilter,tp,LOCATION_REMOVED,LOCATION_REMOVED,1,1,nil,e,tp)
 	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,g,1,0,0)
 end
 function s.ssoper(e,tp,eg,ep,ev,re,r,rp)

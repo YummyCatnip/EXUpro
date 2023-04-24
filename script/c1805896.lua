@@ -33,13 +33,15 @@ function s.atktarg(e,tp,eg,ep,ev,re,r,rp,chk)
 end
 function s.atkoper(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
+	local g=eg:Filter(Card.IsLocation,nil,LOCATION_DECK)
+	local val=100*(#g)
 	if c:IsFaceup() and c:IsRelateToEffect(e) then
 		local e1=Effect.CreateEffect(c)
 		e1:SetType(EFFECT_TYPE_SINGLE)
 		e1:SetProperty(EFFECT_FLAG_COPY_INHERIT)
 		e1:SetCode(EFFECT_UPDATE_ATTACK)
 		e1:SetReset(RESET_EVENT+RESETS_STANDARD)
-		e1:SetValue(100)
+		e1:SetValue(val)
 		c:RegisterEffect(e1)
 		local e2=e1:Clone()
 		e2:SetCode(EFFECT_UPDATE_DEFENSE)
@@ -48,14 +50,19 @@ function s.atkoper(e,tp,eg,ep,ev,re,r,rp)
 end
 --e2 Effect Code
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
-  if chk==0 then return Duel.IsExistingMatchingCard(Card.IsAbleToDeck,tp,LOCATION_GRend+LOCATION_REMOVED,LOCATION_GRAVE+LOCATION_REMOVED,1,nil) end
+  if chk==0 then return Duel.IsExistingMatchingCard(Card.IsAbleToDeck,tp,LOCATION_GRAVE+LOCATION_REMOVED,LOCATION_GRAVE+LOCATION_REMOVED,1,nil) end
 end
 function s.operation(e,tp,eg,ep,ev,re,r,rp)
-  local g=Duel.GetMatchingGroup(Card.IsAbleToDeck,tp,LOCATION_GRend+LOCATION_REMOVED,LOCATION_GRAVE+LOCATION_REMOVED,1,nil)
+  local g=Duel.GetMatchingGroup(Card.IsAbleToDeck,tp,LOCATION_GRAVE+LOCATION_REMOVED,LOCATION_GRAVE+LOCATION_REMOVED,1,nil)
   if #g>0 then
     Duel.SendtoDeck(g,nil,SEQ_DECKSHUFFLE,REASON_EFFECT)
   end
   local tg=Duel.GetOperatedGroup():Filter(Card.IsLocation,nil,LOCATION_DECK)
   if tg:IsExists(Card.IsControler,1,nil,tp) then Duel.ShuffleDeck(tp) end
 	if tg:IsExists(Card.IsControler,1,nil,1-tp) then Duel.ShuffleDeck(1-tp) end
+	local ss=tg:Filter(Card.IsControler,nil,tp)
+	local os=tg:Filter(Card.IsControler,nil,1-tp)
+	if #ss>#os then
+		Duel.SetLP(tp,math.ceil(Duel.GetLP(tp)/2))
+	end
 end
