@@ -28,7 +28,7 @@ A: You can ping Yummy Catnip at our Discord server, and I'll look on to it and h
 ```
 		{
 		"url": "https://github.com/YummyCatnip/EXUpro",
-		"repo_name": "Yummy's Stolen Cards",
+		"repo_name": "EXUpro",
 		"repo_path": "./repositories/EXUpro",
 		"should_update": true,
 		"should_read": true
