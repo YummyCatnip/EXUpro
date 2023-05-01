@@ -4,6 +4,7 @@ SET_ASTROMINI    	= 0xc78
 SET_ABERRATION   	= 0xc79
 SET_PUMPKINHEAD  	= 0xc80
 SET_EVO          	= 0Xc81
+SET_QUELTZ       	= 0xc87
 SET_MUDAFI       	= 0xc88
 SET_HOURGLASS    	= 0xc89
 SET_ENDLESS_SANDS	= 0xc90
@@ -33,6 +34,16 @@ function Auxiliary.rsnsynchro(e,tp,eg,ep,ev,re,r,rp)
 	return e:GetHandler():IsSummonType(SUMMON_TYPE_SYNCHRO)
 end
 
+function Auxiliary.mnphase()
+	return Duel.IsMainPhase()
+end
+
 -- Custom Constants
 
+-- Types
+
 TYPE_EXTRA = TYPE_FUSION+TYPE_SYNCHRO+TYPE_XYZ+TYPE_LINK
+
+-- Hint Messages
+
+HINTMSG_RITUAL	=	10000
