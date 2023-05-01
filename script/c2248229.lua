@@ -78,14 +78,14 @@ function s.rmfil(c)
 	return c:IsMonster() and c:IsAbleToRemove()
 end
 function s.rmtarg(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.IsExistingMatchingCard(s.rmfil,tp,LOCATION_HAND+LOCATION_GRAVE,0,1,nil) end
+	if chk==0 then return Duel.IsExistingMatchingCard(aux.NecroValleyFilter(s.rmfil),tp,LOCATION_HAND+LOCATION_GRAVE,0,1,nil) end
 	Duel.SetOperationInfo(0,CATEGORY_REMOVE,nil,1,tp,0)
 	Duel.SetOperationInfo(0,CATEGORY_DESTROY,nil,1,0,0)
 end
 function s.rmoper(e,tp,eg,ep,ev,re,r,rp)
 	local g=Duel.GetMatchingGroup(Card.IsFaceup,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,nil)
 	if #g<=0 then return end
-	local sg=Duel.Select(HINTMSG_REMOVE,false,tp,s.rmfil,tp,LOCATION_HAND+LOCATION_GRAVE,0,1,1,nil)
+	local sg=Duel.Select(HINTMSG_REMOVE,false,tp,aux.NecroValleyFilter(s.rmfil),tp,LOCATION_HAND+LOCATION_GRAVE,0,1,1,nil)
 	if #sg>0 and Duel.Remove(sg,POS_FACEUP,REASON_EFFECT)>0 then
 		Duel.BreakEffect()
 		local tc=Duel.Select(HINTMSG_DESTROY,false,tp,Card.IsFaceup,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,1,1,nil)
@@ -97,14 +97,14 @@ function s.rsfil(c)
 	return c:IsSpell() and c:IsAbleToRemove()
 end
 function s.rstarg(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.IsExistingMatchingCard(s.rsfil,tp,LOCATION_GRAVE+LOCATION_HAND,0,1,nil) and Duel.IsExistingMatchingCard(Card.IsAbleToRemove,tp,0,LOCATION_GRAVE,1,nil) end
+	if chk==0 then return Duel.IsExistingMatchingCard(aux.NecroValleyFilter(s.rsfil),tp,LOCATION_GRAVE+LOCATION_HAND,0,1,nil) and Duel.IsExistingMatchingCard(Card.IsAbleToRemove,tp,0,LOCATION_GRAVE,1,nil) end
 	Duel.SetOperationInfo(0,CATEGORY_REMOVE,nil,1,tp,0)
 	Duel.SetOperationInfo(0,CATEGORY_REMOVE,nil,1,0,LOCATION_GRAVE)
 end
 function s.rsoper(e,tp,eg,ep,ev,re,r,rp)
 	local g=Duel.GetMatchingGroup(Card.IsAbleToRemove,tp,0,LOCATION_GRAVE,nil)
 	if #g<=0 then return end
-	local sg=Duel.Select(HINTMSG_REMOVE,false,tp,s.rsfil,tp,LOCATION_HAND+LOCATION_GRAVE,0,1,1,nil)
+	local sg=Duel.Select(HINTMSG_REMOVE,false,tp,aux.NecroValleyFilter(s.rsfil),tp,LOCATION_HAND+LOCATION_GRAVE,0,1,1,nil)
 	if #sg>0 and Duel.Remove(sg,POS_FACEUP,REASON_EFFECT)>0 then
 		Duel.BreakEffect()
 		local tc=Duel.Select(HINTMSG_REMOVE,false,tp,Card.IsAbleToRemove,tp,0,LOCATION_GRAVE,1,2,nil)
@@ -117,14 +117,14 @@ function s.rtfil(c)
 end
 function s.rttarg(e,tp,eg,ep,ev,re,r,rp,chk)
 	local rg=Duel.GetDecktopGroup(1-tp,3)
-	if chk==0 then return Duel.IsExistingMatchingCard(s.rtfil,tp,LOCATION_GRAVE+LOCATION_HAND,0,1,nil) and rg:FilterCount(Card.IsAbleToRemove,nil)==3 end
+	if chk==0 then return Duel.IsExistingMatchingCard(aux.NecroValleyFilter(s.rtfil),tp,LOCATION_GRAVE+LOCATION_HAND,0,1,nil) and rg:FilterCount(Card.IsAbleToRemove,nil)==3 end
 	Duel.SetOperationInfo(0,CATEGORY_REMOVE,nil,1,tp,0)
 	Duel.SetOperationInfo(0,CATEGORY_REMOVE,rg,3,0,0)
 end
 function s.rtoper(e,tp,eg,ep,ev,re,r,rp)
 	local g=Duel.GetDecktopGroup(1-tp,3)
 	if #g<=0 then return end
-	local sg=Duel.Select(HINTMSG_REMOVE,false,tp,s.rtfil,tp,LOCATION_HAND+LOCATION_GRAVE,0,1,1,nil)
+	local sg=Duel.Select(HINTMSG_REMOVE,false,tp,aux.NecroValleyFilter(s.rtfil),tp,LOCATION_HAND+LOCATION_GRAVE,0,1,1,nil)
 	if #sg>0 and Duel.Remove(sg,POS_FACEUP,REASON_EFFECT)>0 then
 		Duel.BreakEffect()
 		Duel.Remove(g,POS_FACEDOWN,REASON_EFFECT)
