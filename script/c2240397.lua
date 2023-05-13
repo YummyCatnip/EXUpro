@@ -20,11 +20,6 @@ function s.initial_effect(c)
 	e2:SetTarget(s.mvtarg)
 	e2:SetOperation(s.mvoper)
 	c:RegisterEffect(e2)
-	-- Special Summon from anywhere
-	local e3=Effect.CreateEffect(c)
-	e3:Set
-	e3:SetType(EEFFEC_TYPE_QUICK_O)
-	e3:SetCode(EVENT_FREE_CHAIN)
 end
 s.listed_series={0xc94}
 s.listed_names={87430998}
