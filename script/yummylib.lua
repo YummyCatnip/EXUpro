@@ -4,6 +4,7 @@ SET_ASTROMINI    	= 0xc78
 SET_ABERRATION   	= 0xc79
 SET_PUMPKINHEAD  	= 0xc80
 SET_EVO          	= 0Xc81
+SET_CARCHARRACK  	= 0xc86
 SET_QUELTZ       	= 0xc87
 SET_MUDAFI       	= 0xc88
 SET_HOURGLASS    	= 0xc89
@@ -42,8 +43,8 @@ end
 
 -- Types
 
-TYPE_EXTRA = TYPE_FUSION+TYPE_SYNCHRO+TYPE_XYZ+TYPE_LINK
-
 -- Hint Messages
 
 HINTMSG_RITUAL	=	10000
+
+Duel.LoadScript("extra_functions.lua")
