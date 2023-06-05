@@ -27,14 +27,16 @@ end
 function s.condition(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetCurrentPhase()~=PHASE_DAMAGE or not Duel.IsDamageCalculated()
 end
-function s.filter(c)
+function s.filter(c,tp)
 	return c:IsFaceup() and c:IsSummonType(SUMMON_TYPE_SPECIAL) and c:IsAttackAbove(1000) and Duel.IsExistingTarget(aux.TRUE,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,1,c)
 end
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return false end
-	if chk==0 then return Duel.IsExistingTarget(s.filter,tp,LOCATION_MZONE,LOCATION_MZONE,1,nil) end
+	if chk==0 then return
+	Duel.IsExistingTarget(s.filter,tp,LOCATION_MZONE,LOCATION_MZONE,1,nil,tp) end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TARGET)
-	local g=Duel.SelectTarget(tp,s.filter,tp,LOCATION_MZONE,LOCATION_MZONE,1,1,nil)
+	local
+	g=Duel.SelectTarget(tp,s.filter,tp,LOCATION_MZONE,LOCATION_MZONE,1,1,nil,tp)
 	local g2=Duel.SelectTarget(tp,aux.TRUE,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,1,g)
 	e:SetLabelObject(g2:GetFirst())
 	Duel.SetOperationInfo(0,CATEGORY_DESTROY,g2,1,0,0)
@@ -47,10 +49,11 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
 	local oc=e:GetLabelObject()
 	if tc==oc then tc=tg:GetNext() end
 	if not tc then return end
-	if tc and tc:IsRelateToEffect(e) and tc:IsFaceup() and tc:UpdateAttack(-600)==-600 then
+	if tc and tc:IsRelateToEffect(e) and tc:IsFaceup() and
+	tc:UpdateAttack(-1000)==-1000 then
 		if oc and oc:IsRelateToEffect(e) then
-      Duel.Destroy(oc,REASON_EFFECT)
-    end
+			Duel.Destroy(oc,REASON_EFFECT)
+		end
 	end
 end
 function s.cfilter(c,tp)
