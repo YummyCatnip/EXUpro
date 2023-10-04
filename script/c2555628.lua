@@ -1,5 +1,6 @@
 --Invoking Inu
 local s,id,o=GetID()
+local ROOFTOP_INU=1642313
 function s.initial_effect(c)
 	--Search
 	local e1=Effect.CreateEffect(c)
@@ -29,10 +30,11 @@ function s.initial_effect(c)
 	e3:SetOperation(s.thoper)
 	c:RegisterEffect(e3)
 end
-s.listed_names={250820136}
+s.listed_names={ROOFTOP_INU}
 --e1 Effect Code
 function s.filter(c)
-	return c:IsCode(250820131,250820132,250820133,250820134) and c:IsAbleToHand()
+	-- 2647091 is the ID for future card Astute Examination
+	return c:IsCode(2555808,2647091,2273799,2555626,2556549) and c:IsAbleToHand()
 end
 function s.srtarg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(s.filter,tp,LOCATION_DECK,0,1,nil) end
@@ -48,7 +50,7 @@ function s.sroper(e,tp,eg,ep,ev,re,r,rp)
 end
 --e3 Effect Code
 function s.inufil(c)
-	return c:IsCode(250820136) and c:IsFaceup()
+	return c:IsCode(ROOFTOP_INU) and c:IsFaceup()
 end
 function s.cfilter(c,tp)
 	return c:IsType(TYPE_EQUIP) and c:IsControler(tp) and c:IsAbleToHand()

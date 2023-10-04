@@ -1,5 +1,6 @@
 --Scouting Inu
 local s,id,o=GetID()
+local ROOFTOP_INU=1642313
 function s.initial_effect(c)
 	--Special Summon from GY
 	local e1=Effect.CreateEffect(c)
@@ -29,7 +30,7 @@ function s.initial_effect(c)
 	e3:SetCode(EVENT_SUMMON_SUCCESS)
 	c:RegisterEffect(e3)
 end
-s.listed_names={250820136}
+s.listed_names={ROOFTOP_INU}
 --e1 Effect Code
 function s.spcond(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetFieldGroupCount(tp,LOCATION_MZONE,0)==0
@@ -47,13 +48,13 @@ function s.spoper(e,tp,eg,ep,ev,re,r,rp)
 end
 --e2 Effect Code
 function s.cfilter(c)
-	return c:IsCode(250820136) and c:IsFaceup()
+	return c:IsCode(ROOFTOP_INU) and c:IsFaceup()
 end
 function s.filter1(c)
-	return c:IsCode(250820131,250820132,250820133,250820134) or (c:ListsCode(250820136) and c:IsType(TYPE_MONSTER)) and c:IsAbleToHand()
+	return c:IsCode(250820131,250820132,250820133,250820134) or (c:ListsCode(ROOFTOP_INU) and c:IsType(TYPE_MONSTER)) and c:IsAbleToHand()
 end
 function s.filter2(c)
-	return c:ListsCode(250820136) and c:IsAbleToGrave()
+	return c:ListsCode(ROOFTOP_INU) and c:IsAbleToGrave()
 end
 function s.thtarg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then

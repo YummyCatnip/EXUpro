@@ -1,9 +1,11 @@
 --Astute Inu
 local s,id,o=GetID()
+local ROOFTOP_INU=1642313
+local INVOKING_INU=2555628
 function s.initial_effect(c)
 	--fusion procedure
 	c:EnableReviveLimit()
-	Fusion.AddProcMix(c,true,true,{250820136,250820130},s.matfil)
+	Fusion.AddProcMix(c,true,true,{ROOFTOP_INU,INVOKING_INU},s.matfil)
 	--Gain Effect
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_SINGLE)
@@ -43,8 +45,8 @@ function s.initial_effect(c)
 	e4:SetOperation(s.spoper)
 	c:RegisterEffect(e4)
 end
-s.material={250820136,250820130}
-s.listed_names={250820136}
+s.material={ROOFTOP_INU,INVOKING_INU}
+s.listed_names={ROOFTOP_INU}
 --Fusion material
 function s.matfil(c,fc,sumtype,tp)
 	return c:IsRace(RACE_BEAST,fc,sumtype,tp) and c:IsAttribute(ATTRIBUTE_WIND,fc,sumtype,tp)
@@ -111,13 +113,18 @@ function s.hdtarg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 end
 function s.hdoper(e,tp,eg,ep,ev,re,r,rp)
 	local g=Duel.GetTargetCards(e)
-	if #g>=3 then
+	-- the effect can resolve even if a target is missing, so long as "all but 1" and "1" remain (i.e., 1)
+	if #g>=1 then
+		local rest_count=#g-1
 		Duel.ConfirmCards(1-tp,g)
-		Duel.Hint(HINT_SELECTMSG,1-tp,HINTMSG_TODECK)
-		local tg=g:Select(1-tp,2,2,nil)
-		g:RemoveCard(tg)
-		Duel.SendtoDeck(tg,nil,SEQ_DECKSHUFFLE,REASON_EFFECT)
-		Duel.MoveToDeckTop(g)
+        -- only prompt the opponent to remove cards if more than 1 remain
+		if #g>1 then
+			Duel.Hint(HINT_SELECTMSG,1-tp,HINTMSG_TODECK)
+			local tg=g:Select(1-tp,rest_count,rest_count,nil)
+			g:RemoveCard(tg)
+			Duel.SendtoDeck(tg,nil,SEQ_DECKSHUFFLE,REASON_EFFECT)
+		end
+		Duel.SendtoDeck(g,nil,0,REASON_EFFECT)
 	end
 end
 --e4 Effect Code
@@ -125,7 +132,7 @@ function s.spcond(e,tp,eg,ep,ev,re,r,rp)
 	return e:GetHandler():IsPreviousLocation(LOCATION_MZONE)
 end
 function s.spfilter(c,e,tp)
-	return c:IsType(TYPE_LINK) and c:IsCanBeSpecialSummoned(e,SUMMON_TYPE_LINK,tp,false,false) and c:IsCode(250820136)
+	return c:IsType(TYPE_LINK) and c:IsCanBeSpecialSummoned(e,SUMMON_TYPE_LINK,tp,false,false) and c:IsCode(ROOFTOP_INU)
 end
 function s.sptarg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0 and Duel.IsExistingMatchingCard(s.spfilter,tp,LOCATION_EXTRA,0,1,nil,e,tp) end
