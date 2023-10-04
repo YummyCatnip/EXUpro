@@ -28,8 +28,8 @@ function s.initial_effect(c)
 	e3:SetRange(LOCATION_MZONE)
 	e3:SetCountLimit(1,id)
 	e3:SetCondition(s.condit)
-	e3:SetTarget(s.target)
-	e3:SetOperation(s.operat)
+	e3:SetTarget(s.settg)
+	e3:SetOperation(s.setop)
 	c:RegisterEffect(e3)
 end
 s.listed_series={0xc88}
@@ -48,7 +48,7 @@ end
 function s.cfilter(c)
 	return c:IsSetCard(0xc88) and c:IsMonster()
 end
-function s.condit()
+function s.condit(e,tp)
 	return Duel.IsExistingMatchingCard(s.cfilter,tp,LOCATION_GRAVE,0,1,nil)
 end
 function s.setfilter(c)
