@@ -115,16 +115,19 @@ function s.hdoper(e,tp,eg,ep,ev,re,r,rp)
 	local g=Duel.GetTargetCards(e)
 	-- the effect can resolve even if a target is missing, so long as "all but 1" and "1" remain (i.e., 1)
 	if #g>=1 then
-		local rest_count=#g-1
 		Duel.ConfirmCards(1-tp,g)
-        -- only prompt the opponent to remove cards if more than 1 remain
 		if #g>1 then
+			-- update: opponent chooses one (1) card to place on your topdeck
 			Duel.Hint(HINT_SELECTMSG,1-tp,HINTMSG_TODECK)
-			local tg=g:Select(1-tp,rest_count,rest_count,nil)
+			local tg=g:Select(1-tp,1,1,nil)
 			g:RemoveCard(tg)
-			Duel.SendtoDeck(tg,nil,SEQ_DECKSHUFFLE,REASON_EFFECT)
+			Duel.SendtoDeck(g,nil,SEQ_DECKSHUFFLE,REASON_EFFECT)
+			Duel.BreakEffect()
+			Duel.SendtoDeck(tg,nil,0,REASON_EFFECT)
+		else
+			-- if only one remains, just place it on top
+			Duel.SendtoDeck(g,nil,0,REASON_EFFECT)
 		end
-		Duel.SendtoDeck(g,nil,0,REASON_EFFECT)
 	end
 end
 --e4 Effect Code
