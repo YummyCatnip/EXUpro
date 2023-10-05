@@ -1,5 +1,6 @@
 --Apprentice Inu
 local s,id,o=GetID()
+local ROOFTOP_INU=1642313
 function s.initial_effect(c)
 	--Direct attack
 	local e0=Effect.CreateEffect(c)
@@ -34,10 +35,10 @@ function s.initial_effect(c)
 	e3:SetOperation(s.thoper)
 	c:RegisterEffect(e3)
 end
-s.listed_names={250820136}
+s.listed_names={ROOFTOP_INU}
 --e1 Effect Code
 function s.cfilter(c,tp)
-	return c:ListsCode(250820136) and c:IsControler(tp)
+	return c:ListsCode(ROOFTOP_INU) and c:IsControler(tp)
 end
 function s.spcond(e,tp,eg,ep,ev,re,r,rp)
 	return eg:IsExists(s.cfilter,1,nil,tp)

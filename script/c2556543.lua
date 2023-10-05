@@ -1,5 +1,6 @@
 --Resolute Inu
 local s,id,o=GetID()
+local ROOFTOP_INU=1642313
 function s.initial_effect(c)
 	--Special Summon itself from the hand
 	local e1=Effect.CreateEffect(c)
@@ -29,10 +30,10 @@ function s.initial_effect(c)
 	e2:SetOperation(s.atoper)
 	c:RegisterEffect(e2)
 end
-s.listed_names={250820136}
+s.listed_names={ROOFTOP_INU}
 --e1 Effect Code
 function s.cfilter(c)
-	return c:IsFacedown() or not c:ListsCode(250820136)
+	return c:IsFacedown() or not c:ListsCode(ROOFTOP_INU)
 end
 function s.spcond(e,tp,eg,ep,ev,re,r,rp)
 	return not Duel.IsExistingMatchingCard(s.cfilter,tp,LOCATION_MZONE,0,1,nil)
@@ -59,11 +60,11 @@ function s.spcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	e1:SetOperation(s.spop)
 	Duel.RegisterEffect(e1,tp)
 end
-function s.cfilter(c,tp)
+function s.cfilter2(c,tp)
 	return c:IsSummonPlayer(tp) and c:IsPreviousLocation(LOCATION_EXTRA)
 end
 function s.spcon(e,tp,eg,ep,ev,re,r,rp)
-	return eg:IsExists(s.cfilter,1,nil,tp)
+	return eg:IsExists(s.cfilter2,1,nil,tp)
 end
 function s.spop(e,tp,eg,ep,ev,re,r,rp)
 	local e1=Effect.CreateEffect(e:GetHandler())

@@ -1,5 +1,6 @@
 --Ascended Inu
 local s,id,o=GetID()
+local ROOFTOP_INU=1642313
 function s.initial_effect(c)
 	--Special Summon
 	local e1=Effect.CreateEffect(c)
@@ -24,7 +25,7 @@ function s.initial_effect(c)
 	e2:SetOperation(s.droper)
 	c:RegisterEffect(e2)
 end
-s.listed_names={250820136}
+s.listed_names={ROOFTOP_INU}
 --e1 Effect Code
 function s.spfilter(c,e,tp)
 	return c:IsRace(RACE_BEAST) and c:IsAttribute(ATTRIBUTE_WIND) and c:IsCanBeSpecialSummoned(e,0,tp,false,false,POS_FACEUP)
@@ -39,7 +40,7 @@ function s.spoper(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
 	local g=Duel.SelectMatchingCard(tp,s.spfilter,tp,LOCATION_HAND,0,1,1,nil,e,tp)
 	local tc=g:GetFirst()
-	if tc and not tc:ListsCode(250820136) and tc:IsType(TYPE_EFFECT)then
+	if tc and not tc:ListsCode(ROOFTOP_INU) and tc:IsType(TYPE_EFFECT)then
 		if Duel.SpecialSummonStep(tc,0,tp,tp,false,false,POS_FACEUP) then
 			local e1=Effect.CreateEffect(c)
 			e1:SetType(EFFECT_TYPE_SINGLE)
@@ -73,10 +74,11 @@ function s.droper(e,tp,eg,ep,ev,re,r,rp)
 	local rc=c:GetReasonCard()
 	local p,d=Duel.GetChainInfo(0,CHAININFO_TARGET_PLAYER,CHAININFO_TARGET_PARAM)
 	if Duel.Draw(p,d,REASON_EFFECT) then
-		if not (rc:IsCode(250820136) or rc:ListsCode(250820136)) then
+		Duel.BreakEffect()
+		if not (rc:IsCode(ROOFTOP_INU) or rc:ListsCode(ROOFTOP_INU)) then
 			Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TODECK)
 			local g=Duel.SelectMatchingCard(tp,Card.IsAbleToDeck,tp,LOCATION_HAND,0,1,1,nil)
-			Duel.MoveToDeckBottom(g,tp)
+			Duel.SendtoDeck(g,nil,1,REASON_EFFECT)
 		end
 	end
 end

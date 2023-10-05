@@ -1,5 +1,6 @@
 --Peace and Comfort
 local s,id,o=GetID()
+local ROOFTOP_INU=1642313
 function s.initial_effect(c)
 	--Activate
 	local e1=Effect.CreateEffect(c)
@@ -20,10 +21,10 @@ function s.initial_effect(c)
 	e2:SetOperation(s.operat)
 	c:RegisterEffect(e2)
 end
-s.listed_names={250820136}
+s.listed_names={ROOFTOP_INU}
 --e1 Effect Code
 function s.thfilter(c)
-	return c:ListsCode(250820136) and not c:IsCode(id) and c:IsAbleToHand()
+	return c:ListsCode(ROOFTOP_INU) and not c:IsCode(id) and c:IsAbleToHand()
 end
 function s.activate(e,tp,eg,ep,ev,re,r,rp)
 	if not e:GetHandler():IsRelateToEffect(e) then return end
