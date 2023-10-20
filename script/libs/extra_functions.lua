@@ -6,7 +6,7 @@ function Card.HasMultipleRaces(c)
 end
 
 -- Cirgon Repetitive Stuff
---[[ Cirgons Global Check
+--[[ Cirgons Global Check//not working
 function Auxiliary.CirgonGlobalCheck(c)
 	aux.GlobalCheck(s,function()
 		local ge1=Effect.CreateEffect(c)
