@@ -6,7 +6,7 @@ function Card.HasMultipleRaces(c)
 end
 
 -- Cirgon Repetitive Stuff
--- Cirgons Global Check
+--[[ Cirgons Global Check
 function Auxiliary.CirgonGlobalCheck(c)
 	aux.GlobalCheck(s,function()
 		local ge1=Effect.CreateEffect(c)
@@ -30,7 +30,7 @@ end
 function Auxiliary.checkop2(e,tp,eg,ep,ev,re,r,rp)
 	local loc=Duel.GetChainInfo(ev,CHAININFO_TRIGGERING_LOCATION)
 	if loc==LOCATION_GRAVE then Duel.RegisterFlagEffect(ep,id,0,0,0) end
-end
+end]]
 -- Cirgons Cannot be Banished from the GY
 function Auxiliary.CannotbeRemoved(c,loc)
 	local e1=Effect.CreateEffect(c)
