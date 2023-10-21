@@ -6,31 +6,43 @@ function Card.HasMultipleRaces(c)
 end
 
 -- Cirgon Repetitive Stuff
---[[ Cirgons Global Check//not working
-function Auxiliary.CirgonGlobalCheck(c)
-	aux.GlobalCheck(s,function()
-		local ge1=Effect.CreateEffect(c)
-		ge1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
-		ge1:SetCode(EVENT_SPSUMMON_SUCCESS)
-		ge1:SetOperation(Auxiliary.checkop)
-		Duel.RegisterEffect(ge1,0)
-		local ge2=Effect.CreateEffect(c)
-		ge2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
-		ge2:SetCode(EVENT_CHAINING)
-		ge2:SetOperation(Auxiliary.checkop2)
-		Duel.RegisterEffect(ge2,0)
-	end)
+-- Cirgons Global Check (by Satellaa)
+function Auxiliary.CirgonGlobalCheck(s,c)
+	if not Duel.HasFlagEffect(0,3935780+1) then
+		aux.GlobalCheck(s,function()
+			local ge1=Effect.CreateEffect(c)
+			ge1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+			ge1:SetCode(EVENT_SPSUMMON_SUCCESS)
+			ge1:SetOperation(Auxiliary.checkop)
+			Duel.RegisterEffect(ge1,0)
+			local ge2=Effect.CreateEffect(c)
+			ge2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+			ge2:SetCode(EVENT_CHAINING)
+			ge2:SetOperation(Auxiliary.checkop2)
+			Duel.RegisterEffect(ge2,0)
+		end)
+		Duel.RegisterFlagEffect(0,3935780+1,0,0,0)
+	end
 end
-function Auxiliary.cirfil(c,ep)
-	return c:IsSummonLocation(LOCATION_GRAVE) and c:IsPreviousControler(ep)
+function Auxiliary.cirfil(c,tp)
+	return c:IsSummonLocation(LOCATION_GRAVE) and c:IsPreviousControler(tp)
 end
 function Auxiliary.checkop(e,tp,eg,ep,ev,re,r,rp)
-	if eg:IsExists(aux.cirfil,1,nil,ep) then Duel.RegisterFlagEffect(ep,id,0,0,1) end
+	local tp=Duel.GetChainInfo(ev,CHAININFO_TRIGGERING_PLAYER)
+	if eg:IsExists(Auxiliary.cirfil,1,nil,tp) then
+		Duel.RegisterFlagEffect(tp,3935780,0,0,0)
+	end
 end
 function Auxiliary.checkop2(e,tp,eg,ep,ev,re,r,rp)
 	local loc=Duel.GetChainInfo(ev,CHAININFO_TRIGGERING_LOCATION)
-	if loc==LOCATION_GRAVE then Duel.RegisterFlagEffect(ep,id,0,0,0) end
-end]]
+	if (loc&LOCATION_GRAVE)>0 then
+		Duel.RegisterFlagEffect(ep,3935780,0,0,0)
+	end
+end
+function Auxiliary.CirgonRestrictionCheck(tp)
+	return not Duel.HasFlagEffect(tp,3935780)
+end
+
 -- Cirgons Cannot be Banished from the GY
 function Auxiliary.CannotbeRemoved(c,loc)
 	local e1=Effect.CreateEffect(c)
