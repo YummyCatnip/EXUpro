@@ -74,7 +74,7 @@ function s.lookop(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 function s.cirgonfilter(c,tp)
-	return c:IsFaceup() and c:IsSetCard(SET_CIRGON) and c:IsPreviousControler(tp)
+	return c:IsFaceup() and c:IsSetCard(SET_CIRGON) and c:IsSummonPlayer(tp)
 end
 function s.resetop(e1,e2)
 	return	function(e,tp,eg,ep,ev,re,r,rp)
