@@ -54,6 +54,7 @@ function s.efftg(e,tp,eg,ep,ev,re,r,rp,chk)
 	e:SetLabel(op)
 	if op~=2 then
 		e:SetCategory(CATEGORY_SEARCH+CATEGORY_TOHAND)
+		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_RELEASE)
 		local g=Duel.SelectMatchingCard(tp,s.tbfilter,tp,LOCATION_DECK,0,1,1,nil)
 		Duel.Sendto(g,LOCATION_GRAVE,REASON_RELEASE|REASON_COST)
 	end
@@ -66,6 +67,7 @@ function s.effop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	local raf=c:IsRelateToEffect(e) and c:IsFaceup()
 	if op~=2 then
+		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATOHAND)
 		local tc=Duel.SelectMatchingCard(tp,s.thfilter,tp,LOCATION_DECK,0,1,1,nil):GetFirst()
 		if tc then
 			Duel.Search(tc,tp)
