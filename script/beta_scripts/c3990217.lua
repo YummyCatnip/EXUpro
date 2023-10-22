@@ -13,15 +13,9 @@ function s.initial_effect(c)
 	-- Can be treated as a tuner monster
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_SINGLE)
-	e1:SetCode(EFFECT_SYNCHRO_CHECK)
-	e1:SetValue(s.syncheck)
+	e1:SetCode(30765615)
+	e1:SetValue(function(_,_,sc) return not sc:IsSetCard(SET_CIRGON) end)
 	c:RegisterEffect(e1)
-	local e2=Effect.CreateEffect(c)
-	e2:SetType(EFFECT_TYPE_SINGLE)
-	e2:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
-	e2:SetRange(LOCATION_MZONE)
-	e2:SetCode(EFFECT_NONTUNER)
-	c:RegisterEffect(e2)
 	-- Synchro Summon
 	c:Quick
 	(
@@ -41,14 +35,6 @@ function s.ffilter(c,fc,sumtype,sp,sub,mg,sg)
 	return c:IsSetCard(SET_CIRGON,fc,sumtype,sp) and (not sg or sg:CheckDifferentProperty(Card.GetCode,fc,sumtype,tp)
 		and sg:IsExists(Card.IsSetCard,1,nil,SET_C_CIRGON,fc,sumtype,sp)
 		and sg:IsExists(Card.IsAttribute,1,nil,ATTRIBUTE_FIRE,fc,sumtype,sp))
-end
-function s.syncheck(e,c,sc)
-	if not sc:IsSetCard(SET_CIRGON) then
-		e:GetHandler():AssumeProperty(ASSUME_TYPE,TYPE_TUNER)
-		return true
-	else
-		return false
-	end
 end
 function s.tbfilter(c)
 	return c:IsMonster() and c:IsSetCard(SET_CIRGON) and c:IsReleasable()
@@ -135,14 +121,6 @@ end
 
 
 
-
-
-
-
-
-
-
-
 if not aux.SynchroProcedure then
 	aux.SynchroProcedure = {}
 	Synchro = aux.SynchroProcedure
@@ -202,7 +180,7 @@ function Synchro.CheckFilterChk(c,f1,f2,sub1,sub2,sc,tp)
 	if not te then return false end
 	local f=te:GetValue()
 	local reset=false
-	if f(te,c,sc) then
+	if f(te,c) then
 		reset=true
 	end
 	local res=(c:IsType(TYPE_TUNER,sc,SUMMON_TYPE_SYNCHRO|MATERIAL_SYNCHRO,tp) and (not f1 or f1(c,sc,SUMMON_TYPE_SYNCHRO|MATERIAL_SYNCHRO,tp))) or not f2 or f2(c,sc,SUMMON_TYPE_SYNCHRO|MATERIAL_SYNCHRO,tp) or (sub1 and sub1(c,sc,SUMMON_TYPE_SYNCHRO|MATERIAL_SYNCHRO,tp)) or (sub2 and sub2(c,sc,SUMMON_TYPE_SYNCHRO|MATERIAL_SYNCHRO,tp))
@@ -227,9 +205,23 @@ function Synchro.Condition(f1,min1,max1,f2,min2,max2,sub1,sub2,req1,req2,reqm)
 				local g
 				local mgchk
 				if sub1 then
-					sub1=aux.OR(sub1,function(_c) return _c:IsHasEffect(30765615) and (not f1 or f1(_c,c,SUMMON_TYPE_SYNCHRO|MATERIAL_SYNCHRO,tp)) end)
+					sub1=aux.OR(sub1,function(_c)
+										local tuner_eff={_c:IsHasEffect(30765615)}
+										if not tuner_eff then tuner_eff={} end
+										for _,eff in ipairs(tuner_eff) do
+											local effvalue=eff:GetValue()
+											return #tuner_eff>0 and (not effvalue==0 or effvalue(e,_c,c,tp)) and (not f1 or f1(_c,c,SUMMON_TYPE_SYNCHRO|MATERIAL_SYNCHRO,tp))
+										end
+									end)
 				else
-					sub1=function(_c) return _c:IsHasEffect(30765615) and (not f1 or f1(_c,c,SUMMON_TYPE_SYNCHRO|MATERIAL_SYNCHRO,tp)) end
+					sub1=function(_c)
+							local tuner_eff={_c:IsHasEffect(30765615)}
+							if not tuner_eff then tuner_eff={} end
+							for _,eff in ipairs(tuner_eff) do
+								local effvalue=eff:GetValue()
+								return #tuner_eff>0 and (not effvalue==0 or effvalue(e,_c,c,tp)) and (not f1 or f1(_c,c,SUMMON_TYPE_SYNCHRO|MATERIAL_SYNCHRO,tp))
+							end
+						end
 				end
 				if mg then
 					dg=mg
@@ -310,7 +302,7 @@ function Synchro.CheckP31(c,g,tsg,ntsg,sg,f1,sub1,f2,sub2,min1,max1,min2,max2,re
 	local rg=Group.CreateGroup()
 	for _,te in ipairs({c:GetCardEffect(EFFECT_SYNCHRO_CHECK)}) do
 		local val=te:GetValue()
-		local tg=g:Filter(function(mc) return val(te,mc,sc) end,nil)
+		local tg=g:Filter(function(mc) return val(te,mc) end,nil)
 		rg=tg:Filter(function(mc) return not Synchro.TunerFilter(mc,f1,sub1,sc,tp) and not Synchro.NonTunerFilter(mc,f2,sub2,sc,tp) end,nil)
 	end
 	--c has the synchro limit
@@ -380,7 +372,7 @@ function Synchro.CheckP32(c,g,tsg,ntsg,sg,f2,sub2,min2,max2,req2,reqm,lv,sc,tp,p
 	local rg=Group.CreateGroup()
 	for _,te in ipairs({c:GetCardEffect(EFFECT_SYNCHRO_CHECK)}) do
 		local val=te:GetValue()
-		local tg=g:Filter(function(mc) return val(te,mc,sc) end,nil)
+		local tg=g:Filter(function(mc) return val(te,mc) end,nil)
 		rg=tg:Filter(function(mc) return not Synchro.NonTunerFilter(mc,f2,sub2,sc,tp) end,nil)
 	end
 	--c has the synchro limit
@@ -608,9 +600,23 @@ function Synchro.Target(f1,min1,max1,f2,min2,max2,sub1,sub2,req1,req2,reqm)
 				local g
 				local dg
 				if sub1 then
-					sub1=aux.OR(sub1,function(_c) return _c:IsHasEffect(30765615) and (not f1 or f1(_c,c,SUMMON_TYPE_SYNCHRO|MATERIAL_SYNCHRO,tp)) end)
+					sub1=aux.OR(sub1,function(_c)
+										local tuner_eff={_c:IsHasEffect(30765615)}
+										if not tuner_eff then tuner_eff={} end
+										for _,eff in ipairs(tuner_eff) do
+											local effvalue=eff:GetValue()
+											return #tuner_eff>0 and (not effvalue==0 or effvalue(e,_c,c,tp)) and (not f1 or f1(_c,c,SUMMON_TYPE_SYNCHRO|MATERIAL_SYNCHRO,tp))
+										end
+									end)
 				else
-					sub1=function(_c) return _c:IsHasEffect(30765615) and (not f1 or f1(_c,c,SUMMON_TYPE_SYNCHRO|MATERIAL_SYNCHRO,tp)) end
+					sub1=function(_c)
+							local tuner_eff={_c:IsHasEffect(30765615)}
+							if not tuner_eff then tuner_eff={} end
+							for _,eff in ipairs(tuner_eff) do
+								local effvalue=eff:GetValue()
+								return #tuner_eff>0 and (not effvalue==0 or effvalue(e,_c,c,tp)) and (not f1 or f1(_c,c,SUMMON_TYPE_SYNCHRO|MATERIAL_SYNCHRO,tp))
+							end
+						end
 				end
 				if mg then
 					mgchk=true
@@ -692,7 +698,7 @@ function Synchro.Target(f1,min1,max1,f2,min2,max2,sub1,sub2,req1,req2,reqm)
 								for _, te in ipairs({tc:GetCardEffect(EFFECT_SYNCHRO_CHECK)}) do
 									local val=te:GetValue()
 									for mc in g:Iter() do
-										val(te,mc,c)
+										val(te,mc)
 									end
 								end
 							else
@@ -733,7 +739,7 @@ function Synchro.Target(f1,min1,max1,f2,min2,max2,sub1,sub2,req1,req2,reqm)
 									for _,te in ipairs({tc:GetCardEffect(EFFECT_SYNCHRO_CHECK)}) do
 										local val=te:GetValue()
 										for mc in g:Iter() do
-											val(te,mc,c)
+											val(te,mc)
 										end
 									end
 								else
@@ -921,7 +927,7 @@ function Synchro.MajesticCheck1(c,g,sg,card1,card2,card3,lv,sc,tp,pg,f1,cbt1,f2,
 	local rg=Group.CreateGroup()
 	for _,te in ipairs({c:GetCardEffect(EFFECT_SYNCHRO_CHECK)}) do
 		local val=te:GetValue()
-		local tg=g:Filter(function(mc) return val(te,mc,sc) end,nil)
+		local tg=g:Filter(function(mc) return val(te,mc) end,nil)
 	end
 	--c has the synchro limit
 	for _,f in ipairs({c:GetCardEffect(EFFECT_SYNCHRO_MAT_RESTRICTION)}) do
@@ -1110,7 +1116,7 @@ function Synchro.MajesticTarget(f1,cbt1,f2,cbt2,f3,cbt3,...)
 						for _,te in ipairs({tc:GetCardEffect(EFFECT_SYNCHRO_CHECK)}) do
 							local val=te:GetValue()
 							for mc in g:Iter() do
-								val(te,mc,c)
+								val(te,mc)
 							end
 						end
 						if not card1 then
@@ -1177,7 +1183,7 @@ function Synchro.DarkCheck1(c,g,sg,card1,card2,plv,nlv,sc,tp,pg,f1,f2,...)
 	for _,te in ipairs({c:GetCardEffect(EFFECT_SYNCHRO_CHECK)}) do
 		local val=te:GetValue()
 		for mc in g:Iter() do
-			val(te,mc,sc)
+			val(te,mc)
 		end
 	end
 	--c has the synchro limit
@@ -1398,7 +1404,7 @@ function Synchro.DarkTarget(f1,f2,plv,nlv,...)
 						for _,te in ipairs({tc:GetCardEffect(EFFECT_SYNCHRO_CHECK)}) do
 							local val=te:GetValue()
 							for mc in g:Iter() do
-								val(te,mc,c)
+								val(te,mc)
 							end
 						end
 						if not card1 then
@@ -1433,3 +1439,6 @@ function Synchro.DarkTarget(f1,f2,plv,nlv,...)
 				else return false end
 			end
 end
+
+
+
