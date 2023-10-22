@@ -16,7 +16,7 @@ function s.initial_effect(c)
 	c:SummonedTrigger
 	(
 		false,false,true,false,aux.Stringid(id,1),CATEGORY_LVCHANGE,
-		true,nil,nil,s.lookcost,s.looktg,s.lookop
+		EFFECT_FLAG_DELAY,true,nil,s.lookcost,s.looktg,s.lookop
 	)
 end
 s.listed_names={id}
