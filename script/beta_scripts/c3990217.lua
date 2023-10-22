@@ -210,7 +210,7 @@ function Synchro.Condition(f1,min1,max1,f2,min2,max2,sub1,sub2,req1,req2,reqm)
 										if not tuner_eff then tuner_eff={} end
 										for _,eff in ipairs(tuner_eff) do
 											local effvalue=eff:GetValue()
-											return #tuner_eff>0 and (not effvalue==0 or effvalue(e,_c,c,tp)) and (not f1 or f1(_c,c,SUMMON_TYPE_SYNCHRO|MATERIAL_SYNCHRO,tp))
+											return #tuner_eff>0 and (effvalue==0 or effvalue(e,_c,c,tp)) and (not f1 or f1(_c,c,SUMMON_TYPE_SYNCHRO|MATERIAL_SYNCHRO,tp))
 										end
 									end)
 				else
@@ -219,7 +219,7 @@ function Synchro.Condition(f1,min1,max1,f2,min2,max2,sub1,sub2,req1,req2,reqm)
 							if not tuner_eff then tuner_eff={} end
 							for _,eff in ipairs(tuner_eff) do
 								local effvalue=eff:GetValue()
-								return #tuner_eff>0 and (not effvalue==0 or effvalue(e,_c,c,tp)) and (not f1 or f1(_c,c,SUMMON_TYPE_SYNCHRO|MATERIAL_SYNCHRO,tp))
+								return #tuner_eff>0 and (effvalue==0 or effvalue(e,_c,c,tp)) and (not f1 or f1(_c,c,SUMMON_TYPE_SYNCHRO|MATERIAL_SYNCHRO,tp))
 							end
 						end
 				end
@@ -605,7 +605,7 @@ function Synchro.Target(f1,min1,max1,f2,min2,max2,sub1,sub2,req1,req2,reqm)
 										if not tuner_eff then tuner_eff={} end
 										for _,eff in ipairs(tuner_eff) do
 											local effvalue=eff:GetValue()
-											return #tuner_eff>0 and (not effvalue==0 or effvalue(e,_c,c,tp)) and (not f1 or f1(_c,c,SUMMON_TYPE_SYNCHRO|MATERIAL_SYNCHRO,tp))
+											return #tuner_eff>0 and (effvalue==0 or effvalue(e,_c,c,tp)) and (not f1 or f1(_c,c,SUMMON_TYPE_SYNCHRO|MATERIAL_SYNCHRO,tp))
 										end
 									end)
 				else
@@ -614,7 +614,7 @@ function Synchro.Target(f1,min1,max1,f2,min2,max2,sub1,sub2,req1,req2,reqm)
 							if not tuner_eff then tuner_eff={} end
 							for _,eff in ipairs(tuner_eff) do
 								local effvalue=eff:GetValue()
-								return #tuner_eff>0 and (not effvalue==0 or effvalue(e,_c,c,tp)) and (not f1 or f1(_c,c,SUMMON_TYPE_SYNCHRO|MATERIAL_SYNCHRO,tp))
+								return #tuner_eff>0 and (effvalue==0 or effvalue(e,_c,c,tp)) and (not f1 or f1(_c,c,SUMMON_TYPE_SYNCHRO|MATERIAL_SYNCHRO,tp))
 							end
 						end
 				end
