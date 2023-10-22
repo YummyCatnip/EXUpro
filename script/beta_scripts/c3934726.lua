@@ -16,7 +16,7 @@ function s.initial_effect(c)
 	c:SummonedTrigger
 	(
 		false,false,true,false,nil,nil,
-		true,nil,nil,s.effcost,s.efftg,s.effop
+		EFFECT_FLAG_DELAY,true,nil,s.effcost,s.efftg,s.effop
 	)
 end
 s.listed_names={id}
