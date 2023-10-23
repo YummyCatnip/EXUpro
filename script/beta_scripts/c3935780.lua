@@ -10,7 +10,7 @@ function s.initial_effect(c)
 	c:SummonedTrigger
 	(
 		false,true,true,false,nil,nil,
-		true,nil,nil,s.effcost,s.efftg,s.effop
+		EFFECT_FLAG_DELAY,true,nil,s.effcost,s.efftg,s.effop
 	)
 end
 s.listed_series={SET_CIRGON}

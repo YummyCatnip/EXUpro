@@ -16,7 +16,7 @@ function s.initial_effect(c)
 	c:SummonedTrigger
 	(
 		false,false,true,false,aux.Stringid(id,1),CATEGORY_LVCHANGE,
-		true,nil,nil,s.lookcost,s.looktg,s.lookop
+		EFFECT_FLAG_DELAY,true,nil,s.lookcost,s.looktg,s.lookop
 	)
 end
 s.listed_names={id}
@@ -33,6 +33,7 @@ end
 function s.lookcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return aux.CirgonRestrictionCheck(tp) end
 	aux.CirgonLock(e:GetHandler(),tp)
+	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_RELEASE)
 	local g=Duel.SelectMatchingCard(tp,s.tbfilter,tp,LOCATION_DECK,0,1,1,nil)
 	Duel.Sendto(g,LOCATION_GRAVE,REASON_RELEASE|REASON_COST)
 end
