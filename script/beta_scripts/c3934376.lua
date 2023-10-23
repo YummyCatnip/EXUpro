@@ -30,6 +30,7 @@ function s.rescon(sg,e,tp,mg)
 end
 function s.cost(e,tp,eg,ep,ev,re,r,rp,chk)
 	local c=e:GetHandler()
+	e:SetLabel(1)
 	local g=Duel.GetMatchingGroup(s.cfilter,tp,LOCATION_DECK,0,nil)
 	if chk==0 then return aux.SelectUnselectGroup(g,e,tp,2,2,s.rescon,0) end
 	local sg=aux.SelectUnselectGroup(g,e,tp,2,2,s.rescon,1,tp,HINTMSG_RELEASE)
@@ -45,7 +46,11 @@ function s.thfil2(c)
 end
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	local c=e:GetHandler()
-	if chk==0 then return Duel.IsExistingMatchingCard(s.thfil2,tp,LOCATION_DECK,0,1,nil) end
+	if chk==0 then
+		local res=e:GetLabel()~=0
+		e:SetLabel(0)
+		return res and Duel.IsExistingMatchingCard(s.thfil2,tp,LOCATION_DECK,0,1,nil)
+	end
 	Duel.SetOperationInfo(0,CATEGORY_TOHAND,nil,2,tp,LOCATION_DECK)
 end
 function s.activate(e,tp,eg,ep,ev,re,r,rp)
