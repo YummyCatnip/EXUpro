@@ -28,9 +28,9 @@ function Auxiliary.cirfil(c,tp)
 	return c:IsSummonLocation(LOCATION_GRAVE) and c:IsPreviousControler(tp)
 end
 function Auxiliary.checkop(e,tp,eg,ep,ev,re,r,rp)
-	local tp=Duel.GetChainInfo(ev,CHAININFO_TRIGGERING_PLAYER)
-	if eg:IsExists(Auxiliary.cirfil,1,nil,tp) then
-		Duel.RegisterFlagEffect(tp,3935780,0,0,0)
+	local p=re:GetHandlerPlayer()
+	if eg:IsExists(Auxiliary.cirfil,1,nil,p) then
+		Duel.RegisterFlagEffect(p,3935780,0,0,0)
 	end
 end
 function Auxiliary.checkop2(e,tp,eg,ep,ev,re,r,rp)
