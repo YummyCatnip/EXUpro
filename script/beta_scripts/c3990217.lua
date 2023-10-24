@@ -32,9 +32,13 @@ function s.initial_effect(c)
 end
 s.listed_series={SET_CIRGON,SET_C_CIRGON}
 function s.ffilter(c,fc,sumtype,sp,sub,mg,sg)
-	return c:IsSetCard(SET_CIRGON,fc,sumtype,sp) and (not sg or sg:CheckDifferentProperty(Card.GetCode,fc,sumtype,tp)
+	return c:IsSetCard(SET_CIRGON,fc,sumtype,sp) and (not sg
+		or not sg:IsExists(s.fusfilter,1,c,c:GetCode(fc,sumtype,sp),fc,sumtype,sp)
 		and sg:IsExists(Card.IsSetCard,1,nil,SET_C_CIRGON,fc,sumtype,sp)
 		and sg:IsExists(Card.IsAttribute,1,nil,ATTRIBUTE_FIRE,fc,sumtype,sp))
+end
+function s.fusfilter(c,code,fc,tp)
+	return c:IsSummonCode(fc,SUMMON_TYPE_FUSION,tp,code) and not c:IsHasEffect(511002961)
 end
 function s.tbfilter(c)
 	return c:IsMonster() and c:IsSetCard(SET_CIRGON) and c:IsReleasable()
