@@ -17,6 +17,9 @@ SET_ITERATOR     	= 0xc92
 SET_ETHEREALM    	= 0xc93
 SET_VULUTI       	= 0xc94
 SET_AXYZ         	= 0xc95
+SET_SIMULACRA			= 0xc82
+SET_SIMULACRUM		= 0xc83
+
 
 -- Commonly used names
 CARD_PUMPKINHEAD	= 2736751
@@ -24,6 +27,7 @@ CARD_ABE_56     	= 3788395
 CARD_ABE_214    	= 3874379
 CARD_BOUQUET    	= 3789163
 TOKEN_ETHEREALM 	= 3311799
+CARD_S_CORE				= 1205136
 
 -- Auxiliary functions
 function Auxiliary.pupfil(c)
