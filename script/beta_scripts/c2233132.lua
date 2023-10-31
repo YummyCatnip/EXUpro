@@ -64,6 +64,7 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOGRAVE)
 	local tc=Duel.SelectMatchingCard(tp,s.cfilter,tp,LOCATION_HAND|LOCATION_DECK,0,1,1,nil,e,tp,eg,ep,ev,re,r,rp):GetFirst()
 	if not tc then return end
+	local coreatt=tc:GetAttribute()
 	if (Duel.SendtoGrave(tc,REASON_EFFECT)==0 or not tc:IsLocation(LOCATION_GRAVE)) then return end
 	if tc:IsPreviousLocation(LOCATION_HAND) then
 		Duel.Hint(HINT_OPSELECTED,1-tp,aux.Stringid(id,2))
@@ -84,10 +85,10 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOGRAVE)
 	local sc=Duel.SelectMatchingCard(tp,s.tgfilter,tp,LOCATION_EXTRA,0,1,1,nil,e,tp,eg,ep,ev,re,r,rp,coreatt):GetFirst()
 	if not sc then return end
+	local att=sc:GetAttribute()
 	if Duel.SendtoGrave(sc,REASON_EFFECT)>0 and sc:IsLocation(LOCATION_GRAVE) then
-		local coreatt=tc:GetAttribute()
 		local params={
-			fusfilter=function(c) return s.fusfilter(c,e,tp,eg,ep,ev,re,r,rp,coreatt|sc:GetAttribute()) end,
+			fusfilter=function(c) return s.fusfilter(c,e,tp,eg,ep,ev,re,r,rp,coreatt|att) end,
 			matfilter=function(c) return c:IsLocation(LOCATION_HAND) end,
 			extrafil=s.fextra,extraop=s.extraop
 		}
