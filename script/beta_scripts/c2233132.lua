@@ -25,6 +25,7 @@ function s.fusfilter(c,e,tp,eg,ep,ev,re,r,rp,att)
 			extrafil=s.fextra,extraop=s.extraop
 		}
 	return Fusion.SummonEffTG(params)(e,tp,eg,ep,ev,re,r,rp,0) and c:IsSetCard(SET_SIMULACRA)
+		and c:IsAttributeExcept(att)
 end
 function s.tgfilter(c,e,tp,eg,ep,ev,re,r,rp,coreatt)
 	return c:IsMonster() and c:IsSetCard(SET_SIMULACRA) and c:IsAbleToGrave()
