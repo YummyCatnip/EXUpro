@@ -4,6 +4,8 @@ SET_ASTROMINI    	= 0xc78
 SET_ABERRATION   	= 0xc79
 SET_PUMPKINHEAD  	= 0xc80
 SET_EVO          	= 0Xc81
+SET_SIMULACRA			= 0xc82
+SET_SIMULACRUM		= 0xc83
 SET_CIRGON       	= 0xc84
 SET_C_CIRGON    	= 0x1c84
 SET_CONQUEROR     = 0xc85
@@ -17,8 +19,6 @@ SET_ITERATOR     	= 0xc92
 SET_ETHEREALM    	= 0xc93
 SET_VULUTI       	= 0xc94
 SET_AXYZ         	= 0xc95
-SET_SIMULACRA			= 0xc82
-SET_SIMULACRUM		= 0xc83
 
 
 -- Commonly used names
