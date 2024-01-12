@@ -47,5 +47,6 @@ function s.operation(e,tp,eg,ep,ev,re,r,rp)
 	if e:GetLabel()==1 and Duel.IsPlayerCanDiscardDeck(tp,2) and Duel.SelectYesNo(tp,aux.Stringid(id,2)) then
 		Duel.BreakEffect()
 		Duel.DiscardDeck(tp,2,REASON_EFFECT)
+		e:SetLabel(0)
 	end
 end
