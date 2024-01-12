@@ -54,7 +54,7 @@ function Auxiliary.CannotbeRemoved(c,loc)
 end
 -- Cirgons Locks Your GY
 function Auxiliary.CirgonLock(c,tp)
-		-- Cannot Activate card effects in the GY
+	-- Cannot Activate card effects in the GY
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_FIELD)
 	e1:SetProperty(EFFECT_FLAG_PLAYER_TARGET+EFFECT_FLAG_OATH+EFFECT_FLAG_CLIENT_HINT)
@@ -74,4 +74,64 @@ function Auxiliary.CirgonLock(c,tp)
 end
 function Auxiliary.aclimit(e,re,tp)
 	return re:GetActivateLocation()&LOCATION_GRAVE>0
+end
+
+--[[ Self Destruct and Special Summons Effects that are repeated between all "Fuelfire" Main Deck monsters]]
+function Auxiliary.AddFuelfireMDEffects(c,id)
+	-- Self Destruct
+	local e1=Effect.CreateEffect(c)
+	e1:SetCategory(CATEGORY_DESTROY)
+	e1:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_F)
+	e1:SetCode(EVENT_SUMMON_SUCCESS)
+	e1:SetCondition(Auxiliary.ffdescond)
+	e1:SetTarget(Auxiliary.ffdestarg)
+	e1:SetOperation(Auxiliary.ffdesoper)
+	c:RegisterEffect(e1)
+	local e2=e1:Clone()
+	e2:SetCode(EVENT_SPSUMMON_SUCCESS)
+	c:RegisterEffect(e2)
+	local e3=e2:Clone()
+	e3:SetCode(EVENT_FLIP_SUMMON_SUCCESS)
+	c:RegisterEffect(e3)
+	-- Special Summon
+	local e4=Effect.CreateEffect(c)
+	e4:SetDescription(1152)
+	e4:SetCategory(CATEGORY_SPECIAL_SUMMON)
+	e4:SetType(EFFECT_TYPE_IGNITION)
+	e4:SetRange(LOCATION_HAND)
+	e4:SetCountLimit(1,id)
+	e4:SetCondition(Auxiliary.ffspcond)
+	e4:SetTarget(Auxiliary.ffsptarg)
+	e4:SetOperation(Auxiliary.ffspoper)
+	c:RegisterEffect(e4)
+end
+-- Functions for Self Destruct 
+function Auxiliary.ffdescond(e,tp,eg,ep,ev,re,r,rp)
+	return not Duel.IsExistingMatchingCard(aux.FaceupFilter(Card.IsSetCard,SET_FUELFIRE_T),tp,LOCATION_MZONE,0,1,nil)
+end
+function Auxiliary.ffdestarg(e,tp,eg,ep,ev,re,r,rp,chk)
+	if chk==0 then return true end
+	Duel.SetOperationInfo(0,CATEGORY_DESTROY,e:GetHandler(),1,0,0)
+end
+function Auxiliary.ffdesoper(e,tp,eg,ep,ev,re,r,rp)
+	if e:GetHandler():IsRelateToEffect(e) then
+		Duel.Destroy(e:GetHandler(),REASON_EFFECT)
+	end
+end
+-- Functions for Special Summon
+function Auxiliary.ffspcond(e,tp,eg,ep,ev,re,r,rp)
+	return Duel.GetMatchingGroupCount(Auxiliary.ffspfilter,tp,LOCATION_GRAVE,0,nil)==0
+end
+function Auxiliary.ffspfilter(c)
+	return c:IsSetCard(SET_FUELFIRE) and c:IsMonster()
+end
+function Auxiliary.ffsptarg(e,tp,eg,ep,ev,re,r,rp,chk)
+	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0
+		and e:GetHandler():IsCanBeSpecialSummoned(e,0,tp,false,false) end
+	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,e:GetHandler(),1,0,0)
+end
+function Auxiliary.ffspoper(e,tp,eg,ep,ev,re,r,rp)
+	local c=e:GetHandler()
+	if not c:IsRelateToEffect(e) then return end
+	Duel.SpecialSummon(c,0,tp,tp,false,false,POS_FACEUP)
 end

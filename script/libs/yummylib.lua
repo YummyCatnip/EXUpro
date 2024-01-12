@@ -1,4 +1,6 @@
 -- Custom Archetypes
+SET_FUELFIRE			= 0xc76
+SET_FUELFIRE_T		= 0x1c76
 SET_ANIMATHOS    	= 0xc77
 SET_ASTROMINI    	= 0xc78
 SET_ABERRATION   	= 0xc79
@@ -46,12 +48,7 @@ function Auxiliary.mnphase()
 	return Duel.IsMainPhase()
 end
 
--- Custom Constants
-
--- Types
-
 -- Hint Messages
-
 HINTMSG_RITUAL	=	10000
 
 Duel.LoadScript("extra_functions.lua")
